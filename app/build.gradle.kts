@@ -43,10 +43,13 @@ android {
 
 dependencies {
     implementation(project(":feature:catalog"))
+    implementation(project(":feature:bookpage"))
     implementation(project(":core:ui"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.hilt)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
