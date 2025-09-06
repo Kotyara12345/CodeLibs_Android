@@ -12,7 +12,7 @@ import com.codelibs.core_domain.model.book.Book
 import com.codelibs.core_domain.model.book.Publisher
 import com.codelibs.core_domain.model.book.Rubric
 
-fun BooksResponse.toDomainList(): List<Book> {
+fun BooksResponse.toBookList(): List<Book> {
     return results.map { it.toDomain() }
 }
 
