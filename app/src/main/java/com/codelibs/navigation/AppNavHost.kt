@@ -6,28 +6,38 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.hsact.feature_bookpage.ui.BookPageScreen
+import com.hsact.feature_catalog.ui.CatalogScreen
+
+sealed class AppDestination(val route: String) {
+    data object Catalog : AppDestination("catalog")
+    data object BookPage : AppDestination("bookpage/{bookId}") {
+        fun createRoute(bookId: String) = "bookpage/$bookId"
+    }
+}
 
 @Composable
 fun AppNavHost(
-    modifier: Modifier,
-    navController: NavHostController = rememberNavController(),
-    startDestination: String = "home"
+    modifier: Modifier = Modifier,
+    navController: NavHostController = rememberNavController()
 ) {
-//    NavHost(
-//        navController = navController,
-//        startDestination = "catalog"
-//    ) {
-//        composable("catalog") { backStackEntry ->
-//            CatalogScreen(
-//                onItemClick = { itemId ->
-//                    navController.navigate("details/$itemId")
-//                }
-//            )
-//        }
-//
-//        composable("details/{itemId}") { backStackEntry ->
-//            val itemId = backStackEntry.arguments?.getString("itemId")
-//            BookPageScreen(itemId!!)
-//        }
-
+    NavHost(
+        navController = navController,
+        startDestination = AppDestination.Catalog.route,
+        modifier = modifier
+    ) {
+        composable(AppDestination.Catalog.route) {
+            CatalogScreen(
+                onItemClick = { bookId ->
+                    navController.navigate(AppDestination.BookPage.createRoute(bookId))
+                }
+            )
+        }
+        composable(AppDestination.BookPage.route) { backStackEntry ->
+            val bookId = backStackEntry.arguments?.getString("bookId")
+            BookPageScreen(
+                bookId!!
+            )
+        }
+    }
 }
