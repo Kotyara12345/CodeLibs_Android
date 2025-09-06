@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.hsact.feature_catalog"
+    namespace = "com.hsact.feature_bookpage"
     compileSdk = 36
 
     defaultConfig {

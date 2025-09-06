@@ -17,6 +17,7 @@
             <option value="$PROJECT_DIR$/core_network" />
             <option value="$PROJECT_DIR$/core_ui" />
             <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature_bookpage" />
             <option value="$PROJECT_DIR$/feature_catalog" />
           </set>
         </option>
