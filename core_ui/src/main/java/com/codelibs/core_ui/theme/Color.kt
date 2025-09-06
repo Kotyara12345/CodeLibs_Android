@@ -1,4 +1,4 @@
-package com.codelibs.ui.theme
+package com.codelibs.core_ui.theme
 
 import androidx.compose.ui.graphics.Color
 
