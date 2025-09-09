@@ -1,5 +1,6 @@
 package com.hsact.feature_catalog.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codelibs.core_domain.repository.BooksRepository
@@ -29,6 +30,7 @@ class CatalogViewModel @Inject constructor(
                 _uiState.value = CatalogUiState.Success(books)
             } catch (e: Exception) {
                 _uiState.value = CatalogUiState.Error(e.message ?: "Unknown error")
+                Log.e("CatalogViewModel", "Error loading books", e)
             }
         }
     }

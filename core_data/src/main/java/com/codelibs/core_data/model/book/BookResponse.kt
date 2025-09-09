@@ -13,7 +13,7 @@ data class BookResponse(
     @param:Json(name = "file_format") val fileFormat: String?,
     @param:Json(name = "added_by") val addedBy: AddedByResponse,
     val rating: String?,
-    @param:Json(name = "is_favorited") val isFavorited: String?,
+    @param:Json(name = "is_favorited") val isFavorited: Boolean,
     val title: String,
     val url: String,
     @param:Json(name = "year_release") val yearRelease: Int?,
