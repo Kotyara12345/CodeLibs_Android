@@ -41,6 +41,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
+    ksp(libs.moshi.kotlin.codegen)
     implementation(libs.material)
     implementation(libs.retrofit)
     implementation(libs.converter.moshi)
