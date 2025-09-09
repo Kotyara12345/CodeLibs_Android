@@ -17,7 +17,7 @@ import com.hsact.feature_catalog.viewmodel.CatalogViewModel
 
 @Composable
 fun CatalogScreen(
-    onItemClick: (String) -> Unit,
+    onItemClick: (Int) -> Unit,
     viewModel: CatalogViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -39,7 +39,7 @@ fun CatalogScreen(
                             text = it,
                             modifier = Modifier
                                 .fillMaxSize().padding(bottom = 16.dp)
-                                .clickable { onItemClick(book.id.toString()) }
+                                .clickable { onItemClick(book.id) }
                         )
                     }
                 }

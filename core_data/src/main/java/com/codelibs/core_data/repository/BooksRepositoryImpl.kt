@@ -1,7 +1,8 @@
 package com.codelibs.core_data.repository
 
-import com.codelibs.core_data.remote.api.BooksApiService
-import com.codelibs.core_data.remote.mapper.toBookList
+import com.codelibs.core_network.api.BooksApiService
+import com.codelibs.core_data.mapper.toBookList
+import com.codelibs.core_data.mapper.toDomain
 import com.codelibs.core_domain.model.book.Book
 import com.codelibs.core_domain.repository.BooksRepository
 import jakarta.inject.Inject
@@ -24,5 +25,9 @@ class BooksRepositoryImpl @Inject constructor(
             langCategory,
             yearRelease
         ).toBookList()
+    }
+
+    override suspend fun getBook(id: Int): Book {
+        return api.getBook(id).toDomain()
     }
 }

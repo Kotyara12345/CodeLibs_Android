@@ -1,6 +1,6 @@
-package com.codelibs.core_data.di
+package com.codelibs.core_network.di
 
-import com.codelibs.core_data.remote.api.BooksApiService
+import com.codelibs.core_network.api.BooksApiService
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
