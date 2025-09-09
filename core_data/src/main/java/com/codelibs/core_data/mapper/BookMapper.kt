@@ -16,7 +16,7 @@ fun BooksResponse.toBookList(): List<Book> {
     return results.map { it.toDomain() }
 }
 
-private fun BookDTO.toDomain(): Book {
+fun BookDTO.toDomain(): Book {
     return Book(
         id = id,
         rubrics = rubrics.map { it.toDomain() },

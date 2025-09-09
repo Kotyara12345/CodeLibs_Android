@@ -10,4 +10,6 @@ interface BooksRepository {
         langCategory: String? = null,
         yearRelease: Int? = null
     ): List<Book>
+
+    suspend fun getBook(id: Int): Book
 }

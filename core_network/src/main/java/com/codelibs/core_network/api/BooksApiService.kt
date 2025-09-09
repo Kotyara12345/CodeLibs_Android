@@ -1,7 +1,9 @@
 package com.codelibs.core_network.api
 
+import com.codelibs.core_network.dto.BookDTO
 import com.codelibs.core_network.dto.BooksResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BooksApiService {
@@ -14,4 +16,9 @@ interface BooksApiService {
         @Query("lang_category") langCategory: String? = null,
         @Query("year_release") yearRelease: Int? = null
     ): BooksResponse
+
+    @GET("books/{id}")
+    suspend fun getBook(
+        @Path("id") id: Int
+    ): BookDTO
 }
