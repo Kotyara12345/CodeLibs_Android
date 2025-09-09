@@ -1,11 +1,11 @@
-package com.codelibs.core_data.remote.mapper
+package com.codelibs.core_data.mapper
 
-import com.codelibs.core_data.model.book.AddedByResponse
-import com.codelibs.core_data.model.book.AuthorResponse
-import com.codelibs.core_data.model.book.BookResponse
-import com.codelibs.core_data.model.book.PublisherResponse
-import com.codelibs.core_data.model.book.RubricResponse
-import com.codelibs.core_data.remote.dto.BooksResponse
+import com.codelibs.core_network.dto.AddedByDTO
+import com.codelibs.core_network.dto.AuthorDTO
+import com.codelibs.core_network.dto.BookDTO
+import com.codelibs.core_network.dto.PublisherDTO
+import com.codelibs.core_network.dto.RubricDTO
+import com.codelibs.core_network.dto.BooksResponse
 import com.codelibs.core_domain.model.book.AddedBy
 import com.codelibs.core_domain.model.book.Author
 import com.codelibs.core_domain.model.book.Book
@@ -16,7 +16,7 @@ fun BooksResponse.toBookList(): List<Book> {
     return results.map { it.toDomain() }
 }
 
-private fun BookResponse.toDomain(): Book {
+private fun BookDTO.toDomain(): Book {
     return Book(
         id = id,
         rubrics = rubrics.map { it.toDomain() },
@@ -41,7 +41,7 @@ private fun BookResponse.toDomain(): Book {
     )
 }
 
-private fun RubricResponse.toDomain(): Rubric {
+private fun RubricDTO.toDomain(): Rubric {
     return Rubric(
         id = id,
         name = name,
@@ -50,7 +50,7 @@ private fun RubricResponse.toDomain(): Rubric {
     )
 }
 
-private fun AuthorResponse.toDomain(): Author {
+private fun AuthorDTO.toDomain(): Author {
     return Author(
         id = id,
         name = name,
@@ -60,7 +60,7 @@ private fun AuthorResponse.toDomain(): Author {
     )
 }
 
-private fun PublisherResponse.toDomain(): Publisher {
+private fun PublisherDTO.toDomain(): Publisher {
     return Publisher(
         id = id,
         name = name,
@@ -70,7 +70,7 @@ private fun PublisherResponse.toDomain(): Publisher {
     )
 }
 
-private fun AddedByResponse.toDomain(): AddedBy {
+private fun AddedByDTO.toDomain(): AddedBy {
     return AddedBy(
         id = id,
         username = username

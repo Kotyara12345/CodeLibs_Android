@@ -1,6 +1,6 @@
-package com.codelibs.core_data.remote.api
+package com.codelibs.core_network.api
 
-import com.codelibs.core_data.remote.dto.BooksResponse
+import com.codelibs.core_network.dto.BooksResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

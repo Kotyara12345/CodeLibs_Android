@@ -1,17 +1,17 @@
-package com.codelibs.core_data.model.book
+package com.codelibs.core_network.dto
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class BookResponse(
+data class BookDTO(
     val id: Int,
-    val rubrics: List<RubricResponse>,
-    val authors: List<AuthorResponse>,
-    val publisher: PublisherResponse,
+    val rubrics: List<RubricDTO>,
+    val authors: List<AuthorDTO>,
+    val publisher: PublisherDTO,
     @param:Json(name = "lang_category") val langCategory: String?,
     @param:Json(name = "file_format") val fileFormat: String?,
-    @param:Json(name = "added_by") val addedBy: AddedByResponse,
+    @param:Json(name = "added_by") val addedBy: AddedByDTO,
     val rating: String?,
     @param:Json(name = "is_favorited") val isFavorited: Boolean,
     val title: String,
