@@ -12,6 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.codelibs.core_ui.components.screenPadding
 import com.hsact.feature_catalog.ui.state.CatalogUiState
 import com.hsact.feature_catalog.viewmodel.CatalogViewModel
 
@@ -31,7 +32,7 @@ fun CatalogScreen(
         }
         is CatalogUiState.Success -> {
             LazyColumn(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().screenPadding()
             ) {
                 items(state.books) { book ->
                     book.title?.let {
