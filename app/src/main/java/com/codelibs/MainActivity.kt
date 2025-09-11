@@ -4,17 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.ui.Modifier
-import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.codelibs.core_ui.components.botnav.BottomBar
-import com.codelibs.core_ui.components.topbar.TopBar
-import com.codelibs.core_ui.theme.CodeLibsTheme
-import com.codelibs.navigation.AppDestination
-import com.codelibs.navigation.AppNavHost
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,46 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CodeLibsTheme {
-                val navController = rememberNavController()
-                val navBackStackEntry = navController.currentBackStackEntryAsState()
-                val currentDestination = navBackStackEntry.value?.destination?.route
-
-                val bottomBarDestinations = listOf(
-                    AppDestination.Home.route,
-                    AppDestination.Categories.route,
-                    AppDestination.Favorites.route,
-                    AppDestination.Account.route
-                )
-                val topBarDestinations = listOf(
-                    AppDestination.Home.route,
-                    AppDestination.Favorites.route
-                )
-
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    topBar = {
-                        if (currentDestination in topBarDestinations) {
-                            TopBar(
-                                searchQuery = "",
-                                onQueryChange = { /* TODO */ },
-                                onSearchClick = { /* TODO */ },
-                                onFilterClick = { /* TODO */ }
-                            )
-                        }
-                    },
-                    bottomBar = {
-                        if (currentDestination in bottomBarDestinations) {
-                            BottomBar(navController = navController)
-                        }
-                    }
-                ) { innerPadding ->
-                    AppNavHost(
-                        navController = navController,
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
-            }
+            AppScaffold()
         }
     }
 }
