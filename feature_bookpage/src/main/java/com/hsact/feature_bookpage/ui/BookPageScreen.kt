@@ -54,7 +54,7 @@ fun BookPageScreen(
                             .data(url)
                             .crossfade(true)
                             .build(),
-                        contentDescription = "Book cover",
+                        contentDescription = state.book.title,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(400.dp)

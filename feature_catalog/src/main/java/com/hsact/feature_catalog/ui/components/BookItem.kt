@@ -30,14 +30,14 @@ fun BookItem(
         shape = RoundedCornerShape(12.dp)
     ) {
         Row(modifier = Modifier.height(IntrinsicSize.Min)) {
-            // Левая часть: картинка
+            // Левая часть: картинка с фиксированной высотой
             Image(
                 painter = rememberAsyncImagePainter(book.image),
                 contentDescription = book.title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .weight(0.4f)
-                    .fillMaxHeight()
+                    .height(200.dp) // фиксируем маленькую высоту для списка
                     .clip(RoundedCornerShape(topStart = 12.dp, bottomStart = 12.dp))
             )
 
@@ -57,7 +57,7 @@ fun BookItem(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "${book.authors.toAuthorString()}, ${book.yearRelease ?: ""}",
+                        text = "${book.authors.toAuthorString()} · ${book.yearRelease ?: ""}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.height(4.dp))
