@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
+import com.codelibs.core_ui.components.botnav.BottomBar
 import com.codelibs.core_ui.theme.CodeLibsTheme
 import com.codelibs.navigation.AppNavHost
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,8 +21,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             CodeLibsTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                val navController = rememberNavController()
+
+                Scaffold(
+                    modifier = Modifier.fillMaxSize(),
+                    bottomBar = {
+                        BottomBar(navController = navController)
+                    }
+                ) { innerPadding ->
                     AppNavHost(
+                        navController = navController,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

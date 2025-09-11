@@ -11,13 +11,6 @@ import androidx.navigation.navArgument
 import com.hsact.feature_bookpage.ui.BookPageScreen
 import com.hsact.feature_catalog.ui.CatalogScreen
 
-sealed class AppDestination(val route: String) {
-    data object Catalog : AppDestination("catalog")
-    data object BookPage : AppDestination("bookpage/{bookId}") {
-        fun createRoute(bookId: Int) = "bookpage/$bookId"
-    }
-}
-
 @Composable
 fun AppNavHost(
     modifier: Modifier = Modifier,
@@ -25,22 +18,44 @@ fun AppNavHost(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AppDestination.Catalog.route,
+        startDestination = AppDestination.Home.route,
         modifier = modifier
     ) {
-        composable(AppDestination.Catalog.route) {
+        // Главная
+        composable(AppDestination.Home.route) {
             CatalogScreen(
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
                 }
             )
         }
+
+        // Категории
+        composable(AppDestination.Categories.route) {
+            // TODO: CategoriesScreen из отдельного модуля
+        }
+
+        // Избранное
+        composable(AppDestination.Favorites.route) {
+            CatalogScreen(
+                onItemClick = { bookId ->
+                    navController.navigate(AppDestination.BookPage.createRoute(bookId))
+                }
+            )
+        }
+
+        // Аккаунт
+        composable(AppDestination.Account.route) {
+            // TODO: AccountScreen из отдельного модуля
+        }
+
+        // Экран книги
         composable(
             route = AppDestination.BookPage.route,
             arguments = listOf(
                 navArgument("bookId") { type = NavType.IntType }
             )
-        ) { backStackEntry ->
+        ) {
             BookPageScreen()
         }
     }
