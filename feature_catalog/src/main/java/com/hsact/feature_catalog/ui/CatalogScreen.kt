@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.codelibs.core_ui.components.screenPadding
+import com.hsact.feature_catalog.ui.components.BookItem
 import com.hsact.feature_catalog.ui.state.CatalogUiState
 import com.hsact.feature_catalog.viewmodel.CatalogViewModel
 
@@ -34,15 +35,18 @@ fun CatalogScreen(
             LazyColumn(
                 modifier = Modifier.fillMaxSize().screenPadding()
             ) {
+//                items(state.books) { book ->
+//                    book.title?.let {
+//                        Text(
+//                            text = it,
+//                            modifier = Modifier
+//                                .fillMaxSize().padding(bottom = 16.dp)
+//                                .clickable { onItemClick(book.id) }
+//                        )
+//                    }
+//                }
                 items(state.books) { book ->
-                    book.title?.let {
-                        Text(
-                            text = it,
-                            modifier = Modifier
-                                .fillMaxSize().padding(bottom = 16.dp)
-                                .clickable { onItemClick(book.id) }
-                        )
-                    }
+                    BookItem(book = book, onItemClick = onItemClick)
                 }
             }
         }
