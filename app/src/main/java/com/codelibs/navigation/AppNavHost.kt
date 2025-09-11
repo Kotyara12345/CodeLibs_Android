@@ -41,8 +41,7 @@ fun AppNavHost(
                 navArgument("bookId") { type = NavType.IntType }
             )
         ) { backStackEntry ->
-            val bookId = backStackEntry.arguments?.getInt("bookId") ?: return@composable
-            BookPageScreen(bookId)
+            BookPageScreen()
         }
     }
 }
