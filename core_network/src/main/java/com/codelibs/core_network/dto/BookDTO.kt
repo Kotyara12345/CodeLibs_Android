@@ -12,7 +12,7 @@ data class BookDTO(
     @param:Json(name = "lang_category") val langCategory: String?,
     @param:Json(name = "file_format") val fileFormat: String?,
     @param:Json(name = "added_by") val addedBy: AddedByDTO,
-    val rating: String?,
+    val rating: Int?,
     @param:Json(name = "is_favorited") val isFavorited: Boolean,
     val title: String,
     val url: String,
