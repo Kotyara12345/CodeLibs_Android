@@ -1,19 +1,16 @@
 package com.codelibs.feature_rubrics.ui
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -23,7 +20,7 @@ import com.codelibs.feature_rubrics.viewmodel.RubricsViewModel
 
 @Composable
 fun RubricsScreen(
-    onItemClick: (Int) -> Unit,
+    onItemClick: (Int, String) -> Unit,
     viewModel: RubricsViewModel = hiltViewModel()
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -41,22 +38,15 @@ fun RubricsScreen(
         )
 
         when (state) {
-            is RubricsUiState.Loading -> {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-            }
-
-            is RubricsUiState.Error -> {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("Ошибка: ${state.message}")
-                }
-            }
-
+            is RubricsUiState.Loading -> { /* ... */ }
+            is RubricsUiState.Error -> { /* ... */ }
             is RubricsUiState.Success -> {
                 LazyColumn {
                     items(state.rubrics) { rubric ->
-                        RubricItem(rubric = rubric, onItemClick = onItemClick)
+                        // RubricItem остаётся с onItemClick: (Int) -> Unit
+                        RubricItem(rubric = rubric, onItemClick = { id ->
+                            onItemClick(id, rubric.name) // пробрасываем имя
+                        })
                     }
                 }
             }

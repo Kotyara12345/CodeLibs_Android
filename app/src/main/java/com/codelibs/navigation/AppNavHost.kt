@@ -1,5 +1,6 @@
 package com.codelibs.navigation
 
+import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -22,44 +23,66 @@ fun AppNavHost(
         startDestination = AppDestination.Home.route,
         modifier = modifier
     ) {
-        // Главная
+        // Home (главный каталог без фильтра)
         composable(AppDestination.Home.route) {
             CatalogScreen(
+                rubricId = null,
+                rubricName = null,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
                 }
             )
         }
 
-        // Категории
+        // Categories (список рубрик)
         composable(AppDestination.Categories.route) {
             RubricsScreen(
-                onItemClick = { rubricId -> {}
-//                    navController.navigate(AppDestination.Catalog.createRoute(rubricId))
+                onItemClick = { rubricId, rubricName ->
+                    navController.navigate(AppDestination.Catalog.createRoute(rubricId, rubricName))
                 }
             )
         }
 
-        // Избранное
-        composable(AppDestination.Favorites.route) {
+        // Catalog по рубрике (принимаем id + name)
+        composable(
+            route = AppDestination.Catalog.route,
+            arguments = listOf(
+                navArgument("rubricId") { type = NavType.IntType },
+                navArgument("rubricName") { type = NavType.StringType }
+            )
+        ) { backStackEntry ->
+            val rubricId = backStackEntry.arguments?.getInt("rubricId")
+            val rawName = backStackEntry.arguments?.getString("rubricName")
+            val rubricName = rawName?.let { Uri.decode(it) } // безопасно декодируем
             CatalogScreen(
+                rubricId = rubricId,
+                rubricName = rubricName,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
                 }
             )
         }
 
-        // Аккаунт
-        composable(AppDestination.Account.route) {
-            // TODO: AccountScreen из отдельного модуля
+        // Favorites
+        composable(AppDestination.Favorites.route) {
+            CatalogScreen(
+                rubricId = null,
+                rubricName = null,
+                onItemClick = { bookId ->
+                    navController.navigate(AppDestination.BookPage.createRoute(bookId))
+                }
+            )
         }
 
-        // Экран книги
+        // Account
+        composable(AppDestination.Account.route) {
+            // TODO: AccountScreen
+        }
+
+        // Book page
         composable(
             route = AppDestination.BookPage.route,
-            arguments = listOf(
-                navArgument("bookId") { type = NavType.IntType }
-            )
+            arguments = listOf(navArgument("bookId") { type = NavType.IntType })
         ) {
             BookPageScreen()
         }

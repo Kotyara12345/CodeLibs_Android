@@ -20,6 +20,12 @@ fun AppScaffold() {
         val navBackStackEntry = navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry.value?.destination?.route
 
+        // нормализуем маршрут: если это любой catalog-экран — считаем его 'home'
+        val selectedDestination = when {
+            currentDestination?.startsWith("catalog") == true -> AppDestination.Home.route
+            else -> currentDestination
+        }
+
         val bottomBarDestinations = listOf(
             AppDestination.Home.route,
             AppDestination.Categories.route,
@@ -34,7 +40,8 @@ fun AppScaffold() {
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
-                if (currentDestination in topBarDestinations) {
+                // используем selectedDestination
+                if (selectedDestination in topBarDestinations) {
                     TopBar(
                         searchQuery = "",
                         onQueryChange = { /* TODO */ },
@@ -44,8 +51,10 @@ fun AppScaffold() {
                 }
             },
             bottomBar = {
-                if (currentDestination in bottomBarDestinations) {
-                    BottomBar(navController = navController)
+                if (selectedDestination in bottomBarDestinations) {
+                    BottomBar(
+                        navController = navController
+                    )
                 }
             }
         ) { innerPadding ->
