@@ -38,7 +38,14 @@ fun AppNavHost(
         composable(AppDestination.Categories.route) {
             RubricsScreen(
                 onItemClick = { rubricId, rubricName ->
-                    navController.navigate(AppDestination.Catalog.createRoute(rubricId, rubricName))
+                    navController.navigate(
+                        AppDestination.Catalog.createRoute(
+                            rubricId,
+                            rubricName
+                        )
+                    ) {
+                        popUpTo(AppDestination.Categories.route) { inclusive = true }
+                    }
                 }
             )
         }
