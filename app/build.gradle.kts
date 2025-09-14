@@ -14,8 +14,8 @@ android {
         applicationId = "com.codelibs"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.0.1"
+        versionCode = 2
+        versionName = "0.0.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -39,6 +39,15 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+    applicationVariants.all {
+        val variant = this
+        variant.outputs
+            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .forEach { output ->
+                val outputFileName = "CodeLibs_v${variant.versionName}.apk"
+                output.outputFileName = outputFileName
+            }
     }
 }
 
