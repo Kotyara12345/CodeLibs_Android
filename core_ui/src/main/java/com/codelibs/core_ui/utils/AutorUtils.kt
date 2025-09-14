@@ -1,6 +1,6 @@
 package com.codelibs.core_ui.utils
 
-import com.codelibs.core_domain.model.book.Author
+import com.codelibs.core_domain.model.Author
 
 //fun List<Author>.toAuthorString(): String {
 //    return this.joinToString(separator = ",") { author ->

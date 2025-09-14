@@ -6,11 +6,11 @@ import com.codelibs.core_network.dto.BookDTO
 import com.codelibs.core_network.dto.PublisherDTO
 import com.codelibs.core_network.dto.RubricDTO
 import com.codelibs.core_network.dto.BooksResponse
-import com.codelibs.core_domain.model.book.AddedBy
-import com.codelibs.core_domain.model.book.Author
-import com.codelibs.core_domain.model.book.Book
-import com.codelibs.core_domain.model.book.Publisher
-import com.codelibs.core_domain.model.book.Rubric
+import com.codelibs.core_domain.model.AddedBy
+import com.codelibs.core_domain.model.Author
+import com.codelibs.core_domain.model.Book
+import com.codelibs.core_domain.model.Publisher
+import com.codelibs.core_domain.model.Rubric
 
 fun BooksResponse.toBookList(): List<Book> {
     return results.map { it.toDomain() }

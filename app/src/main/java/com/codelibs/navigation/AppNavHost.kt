@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.codelibs.feature_profile.ui.ProfileScreen
 import com.codelibs.feature_rubrics.ui.RubricsScreen
 import com.hsact.feature_bookpage.ui.BookPageScreen
 import com.hsact.feature_catalog.ui.CatalogScreen
@@ -83,7 +84,7 @@ fun AppNavHost(
 
         // Account
         composable(AppDestination.Account.route) {
-            // TODO: AccountScreen
+            ProfileScreen()
         }
 
         // Book page

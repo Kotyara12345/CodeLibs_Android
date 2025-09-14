@@ -1,4 +1,4 @@
-package com.codelibs.core_domain.model.book
+package com.codelibs.core_domain.model
 
 data class Rubric(
     val id: Int,

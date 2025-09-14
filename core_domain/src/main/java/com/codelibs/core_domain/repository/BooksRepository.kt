@@ -1,7 +1,7 @@
 package com.codelibs.core_domain.repository
 
-import com.codelibs.core_domain.model.book.Book
-import com.codelibs.core_domain.model.book.Rubric
+import com.codelibs.core_domain.model.Book
+import com.codelibs.core_domain.model.Rubric
 
 interface BooksRepository {
     suspend fun getBooks(

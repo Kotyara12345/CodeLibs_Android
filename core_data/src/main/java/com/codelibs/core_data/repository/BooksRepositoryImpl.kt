@@ -3,8 +3,8 @@ package com.codelibs.core_data.repository
 import com.codelibs.core_network.api.BooksApiService
 import com.codelibs.core_data.mapper.toBookList
 import com.codelibs.core_data.mapper.toDomain
-import com.codelibs.core_domain.model.book.Book
-import com.codelibs.core_domain.model.book.Rubric
+import com.codelibs.core_domain.model.Book
+import com.codelibs.core_domain.model.Rubric
 import com.codelibs.core_domain.repository.BooksRepository
 import jakarta.inject.Inject
 
