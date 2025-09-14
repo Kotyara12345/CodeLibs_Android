@@ -41,7 +41,7 @@ fun BookDTO.toDomain(): Book {
     )
 }
 
-private fun RubricDTO.toDomain(): Rubric {
+fun RubricDTO.toDomain(): Rubric {
     return Rubric(
         id = id,
         name = name,

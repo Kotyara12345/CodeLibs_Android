@@ -2,6 +2,7 @@ package com.codelibs.core_network.api
 
 import com.codelibs.core_network.dto.BookDTO
 import com.codelibs.core_network.dto.BooksResponse
+import com.codelibs.core_network.dto.RubricDTO
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -21,4 +22,9 @@ interface BooksApiService {
     suspend fun getBook(
         @Path("id") id: Int
     ): BookDTO
+
+    @GET("rubrics/")
+    suspend fun getCategories(
+        @Query("search") search: String? = null,
+    ): List<RubricDTO>
 }
