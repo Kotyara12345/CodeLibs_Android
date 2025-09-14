@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.codelibs.feature_rubrics.ui.RubricsScreen
 import com.hsact.feature_bookpage.ui.BookPageScreen
 import com.hsact.feature_catalog.ui.CatalogScreen
 
@@ -32,7 +33,11 @@ fun AppNavHost(
 
         // Категории
         composable(AppDestination.Categories.route) {
-            // TODO: CategoriesScreen из отдельного модуля
+            RubricsScreen(
+                onItemClick = { rubricId -> {}
+//                    navController.navigate(AppDestination.Catalog.createRoute(rubricId))
+                }
+            )
         }
 
         // Избранное

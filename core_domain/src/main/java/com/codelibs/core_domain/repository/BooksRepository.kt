@@ -13,5 +13,5 @@ interface BooksRepository {
     ): List<Book>
 
     suspend fun getBook(id: Int): Book
-    suspend fun getCategories(search: String? = null): List<Rubric>
+    suspend fun getRubrics(search: String? = null): List<Rubric>
 }

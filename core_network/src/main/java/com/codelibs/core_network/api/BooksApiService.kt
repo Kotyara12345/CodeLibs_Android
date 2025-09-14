@@ -24,7 +24,7 @@ interface BooksApiService {
     ): BookDTO
 
     @GET("rubrics/")
-    suspend fun getCategories(
+    suspend fun getRubrics(
         @Query("search") search: String? = null,
     ): List<RubricDTO>
 }
