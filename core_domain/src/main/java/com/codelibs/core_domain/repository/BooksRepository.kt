@@ -1,6 +1,7 @@
 package com.codelibs.core_domain.repository
 
-import com.codelibs.core_domain.model.book.Book
+import com.codelibs.core_domain.model.Book
+import com.codelibs.core_domain.model.Rubric
 
 interface BooksRepository {
     suspend fun getBooks(
@@ -12,4 +13,5 @@ interface BooksRepository {
     ): List<Book>
 
     suspend fun getBook(id: Int): Book
+    suspend fun getRubrics(search: String? = null): List<Rubric>
 }

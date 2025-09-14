@@ -19,6 +19,8 @@
             <option value="$PROJECT_DIR$/feature" />
             <option value="$PROJECT_DIR$/feature_bookpage" />
             <option value="$PROJECT_DIR$/feature_catalog" />
+            <option value="$PROJECT_DIR$/feature_profile" />
+            <option value="$PROJECT_DIR$/feature_rubrics" />
           </set>
         </option>
       </GradleProjectSettings>

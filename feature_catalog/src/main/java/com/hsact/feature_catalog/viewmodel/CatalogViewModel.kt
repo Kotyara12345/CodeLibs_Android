@@ -19,14 +19,14 @@ class CatalogViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<CatalogUiState>(CatalogUiState.Loading)
     val uiState: StateFlow<CatalogUiState> = _uiState
 
-    init {
-        loadBooks()
-    }
-
-    private fun loadBooks() {
+    fun loadBooks(rubricId: Int? = null) {
         viewModelScope.launch {
             try {
-                val books = booksRepository.getBooks(page = 1)
+                val books = if (rubricId != null) {
+                    booksRepository.getBooks(page = 1, rubrics = listOf(rubricId))
+                } else {
+                    booksRepository.getBooks(page = 1)
+                }
                 _uiState.value = CatalogUiState.Success(books)
             } catch (e: Exception) {
                 _uiState.value = CatalogUiState.Error(e.message ?: "Unknown error")

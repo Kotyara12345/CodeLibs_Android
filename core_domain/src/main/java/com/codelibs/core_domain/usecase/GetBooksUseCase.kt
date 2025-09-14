@@ -1,6 +1,6 @@
 package com.codelibs.core_domain.usecase
 
-import com.codelibs.core_domain.model.book.Book
+import com.codelibs.core_domain.model.Book
 import com.codelibs.core_domain.repository.BooksRepository
 
 class GetBooksUseCase(

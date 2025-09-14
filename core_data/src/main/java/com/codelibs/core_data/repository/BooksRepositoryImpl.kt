@@ -3,7 +3,8 @@ package com.codelibs.core_data.repository
 import com.codelibs.core_network.api.BooksApiService
 import com.codelibs.core_data.mapper.toBookList
 import com.codelibs.core_data.mapper.toDomain
-import com.codelibs.core_domain.model.book.Book
+import com.codelibs.core_domain.model.Book
+import com.codelibs.core_domain.model.Rubric
 import com.codelibs.core_domain.repository.BooksRepository
 import jakarta.inject.Inject
 
@@ -29,5 +30,8 @@ class BooksRepositoryImpl @Inject constructor(
 
     override suspend fun getBook(id: Int): Book {
         return api.getBook(id).toDomain()
+    }
+    override suspend fun getRubrics(search: String?): List<Rubric> {
+        return api.getRubrics(search).map { it.toDomain() }
     }
 }

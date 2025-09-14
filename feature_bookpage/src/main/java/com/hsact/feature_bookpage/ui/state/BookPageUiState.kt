@@ -1,6 +1,6 @@
 package com.hsact.feature_bookpage.ui.state
 
-import com.codelibs.core_domain.model.book.Book
+import com.codelibs.core_domain.model.Book
 
 sealed class BookPageUiState{
     object Loading : BookPageUiState()

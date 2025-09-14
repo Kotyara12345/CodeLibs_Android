@@ -1,6 +1,6 @@
 package com.hsact.feature_catalog.ui.state
 
-import com.codelibs.core_domain.model.book.Book
+import com.codelibs.core_domain.model.Book
 
 sealed class CatalogUiState {
     object Loading : CatalogUiState()

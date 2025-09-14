@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.codelibs.core_domain.model.book.Book
+import com.codelibs.core_domain.model.Book
 import com.codelibs.core_ui.utils.fromHtmlToAnnotatedString
 import com.codelibs.core_ui.utils.toAuthorString
 

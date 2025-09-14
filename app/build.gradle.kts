@@ -45,6 +45,8 @@ android {
 dependencies {
     implementation(project(":feature:catalog"))
     implementation(project(":feature:bookpage"))
+    implementation(project(":feature:rubrics"))
+    implementation(project(":feature:profile"))
     implementation(project(":core:ui"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
