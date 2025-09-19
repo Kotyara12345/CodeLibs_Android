@@ -30,7 +30,7 @@ class CatalogViewModel @Inject constructor(
     private var currentRubrics: List<Int> = emptyList()
 
     /**
-     * Загрузить книги.
+     * Загрузить книги
      * @param rubricsId — фильтр по рубрикам (пустой список = без фильтра)
      * @param reset — true = загрузка с первой страницы (сброс), false = загрузить next page (append)
      */

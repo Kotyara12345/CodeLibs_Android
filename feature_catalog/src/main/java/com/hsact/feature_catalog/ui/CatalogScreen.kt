@@ -39,7 +39,15 @@ fun CatalogScreen(
 
     // Загружаем книги при изменении рубрики (или при старте)
     LaunchedEffect(rubricsId) {
-        viewModel.loadBooks(rubricsId, reset = true)
+        // Загружаем только если uiState — Loading или список пуст
+        val shouldLoad = when (val s = state) {
+            is CatalogUiState.Success -> s.books.isEmpty()
+            is CatalogUiState.Error -> true
+            is CatalogUiState.Loading -> true
+        }
+        if (shouldLoad) {
+            viewModel.loadBooks(rubricsId, reset = true)
+        }
     }
 
     // Автоподгрузка при достижении конца списка
