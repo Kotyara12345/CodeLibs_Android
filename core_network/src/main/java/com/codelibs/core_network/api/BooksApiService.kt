@@ -18,7 +18,7 @@ interface BooksApiService {
         @Query("year_release") yearRelease: Int? = null
     ): BooksResponse
 
-    @GET("books/{id}")
+    @GET("books/{id}/")
     suspend fun getBook(
         @Path("id") id: Int
     ): BookDTO
