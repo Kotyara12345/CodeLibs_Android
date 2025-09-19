@@ -3,6 +3,7 @@ package com.codelibs.navigation
 import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -13,6 +14,7 @@ import com.codelibs.feature_profile.ui.ProfileScreen
 import com.codelibs.feature_rubrics.ui.RubricsScreen
 import com.hsact.feature_bookpage.ui.BookPageScreen
 import com.hsact.feature_catalog.ui.CatalogScreen
+import com.hsact.feature_catalog.viewmodel.CatalogViewModel
 
 @Composable
 fun AppNavHost(
@@ -25,13 +27,15 @@ fun AppNavHost(
         modifier = modifier
     ) {
         // Home (главный каталог без фильтра)
-        composable(AppDestination.Home.route) {
+        composable(AppDestination.Home.route) { backStackEntry ->
+            val viewModel: CatalogViewModel = hiltViewModel(backStackEntry)
             CatalogScreen(
                 rubricsId = emptyList(),
                 rubricName = null,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
-                }
+                },
+                viewModel = viewModel
             )
         }
 
@@ -61,24 +65,29 @@ fun AppNavHost(
         ) { backStackEntry ->
             val rubricId = backStackEntry.arguments?.getInt("rubricId")
             val rawName = backStackEntry.arguments?.getString("rubricName")
-            val rubricName = rawName?.let { Uri.decode(it) } // безопасно декодируем
+            val rubricName = rawName?.let { Uri.decode(it) }
+            val viewModel: CatalogViewModel = hiltViewModel(backStackEntry)
+
             CatalogScreen(
                 rubricsId = listOfNotNull(rubricId),
                 rubricName = rubricName,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
-                }
+                },
+                viewModel = viewModel
             )
         }
 
         // Favorites
-        composable(AppDestination.Favorites.route) {
+        composable(AppDestination.Favorites.route) { backStackEntry ->
+            val viewModel: CatalogViewModel = hiltViewModel(backStackEntry)
             CatalogScreen(
                 rubricsId = emptyList(),
                 rubricName = null,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
-                }
+                },
+                viewModel = viewModel
             )
         }
 
