@@ -1,13 +1,19 @@
 package com.hsact.feature_bookpage.ui
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +26,9 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.codelibs.core_ui.components.screenPadding
 import com.codelibs.core_ui.utils.fromHtmlToAnnotatedString
+import com.codelibs.core_ui.utils.toAuthorString
+import com.hsact.feature_bookpage.ui.components.MetaRow
+import com.hsact.feature_bookpage.ui.components.RubricItem
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
 import com.hsact.feature_bookpage.viewmodel.BookPageViewModel
 
@@ -39,31 +48,98 @@ fun BookPageScreen(
                     .screenPadding()
                     .verticalScroll(rememberScrollState())
             ) {
-                // Автор
-                Text(state.book.authors.first().name)
-                Spacer(Modifier.height(16.dp))
-
-                // Заголовок книги
-                Text(state.book.title.toString())
-                Spacer(Modifier.height(16.dp))
-
                 // Изображение книги
-                state.book.image?.let { url ->
+                val book = state.book
+                book.image?.let { url ->
                     AsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(url)
                             .crossfade(true)
                             .build(),
-                        contentDescription = state.book.title,
+                        contentDescription = book.title,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(400.dp)
                     )
                     Spacer(Modifier.height(16.dp))
                 }
+                // Заголовок книги
+                Text(book.title.toString(), style = MaterialTheme.typography.titleLarge)
+                Spacer(Modifier.height(8.dp))
 
-                // Описание книги
-                Text(state.book.content?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
+                // Автор
+                Text(book.authors.toAuthorString())
+                Spacer(Modifier.height(16.dp))
+
+                //Рубрики
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(
+                        items = book.rubrics,
+                        key = { rubric -> rubric.id } // если у рубрики есть id
+                    ) { rubric ->
+                        RubricItem(
+                            rubric = rubric,
+                            onItemClick = {}
+                        )
+                        Spacer(Modifier.width(8.dp))
+                    }
+                }
+                Spacer(Modifier.height(16.dp))
+
+                //Оценки
+                Text(
+                    text = "⭐ ${book.rating}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(Modifier.height(16.dp))
+
+                //Описание книги
+                Text(book.content?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
+                Spacer(Modifier.height(16.dp))
+
+                //Оглавление
+//                Text(book.tableOfContents?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
+//                Spacer(Modifier.height(16.dp))
+
+                //Мета
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    MetaRow("Год издания", book.yearRelease.toString())
+                    MetaRow("Страниц", book.pagesNumber?.toString() ?: "-")
+                    MetaRow("Тип файла", book.fileFormat ?: "-")
+                    MetaRow("Размер файла", book.fileFormat ?: "-")
+                    MetaRow("Издательство", book.publisher.name)
+                    MetaRow("Переводчик", book.translator ?: "-")
+                    MetaRow("Добавлено", book.addedBy.username)
+                }
+                Spacer(Modifier.height(16.dp))
+
+                //Кнопка "Купить"
+                Button(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Купить")
+                }
+                Spacer(Modifier.height(2.dp))
+                Text(
+                    text = "Поддержите автора, купив эту книгу",
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                )
+                Spacer(Modifier.height(16.dp))
+
+                //Кнопка "Скачать"
+                Button(
+                    onClick = {},
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Скачать")
+                }
             }
         }
     }
