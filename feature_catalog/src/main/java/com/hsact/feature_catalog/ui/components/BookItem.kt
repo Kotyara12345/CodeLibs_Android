@@ -62,7 +62,7 @@ fun BookItem(
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "⭐ ${book.rating ?: 0.0}",
+                        text = "⭐ ${book.rating}",
                         style = MaterialTheme.typography.bodyMedium
                     )
                     Spacer(modifier = Modifier.height(8.dp))

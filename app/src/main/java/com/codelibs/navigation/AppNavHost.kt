@@ -27,7 +27,7 @@ fun AppNavHost(
         // Home (главный каталог без фильтра)
         composable(AppDestination.Home.route) {
             CatalogScreen(
-                rubricId = null,
+                rubricsId = emptyList(),
                 rubricName = null,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
@@ -63,7 +63,7 @@ fun AppNavHost(
             val rawName = backStackEntry.arguments?.getString("rubricName")
             val rubricName = rawName?.let { Uri.decode(it) } // безопасно декодируем
             CatalogScreen(
-                rubricId = rubricId,
+                rubricsId = listOfNotNull(rubricId),
                 rubricName = rubricName,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
@@ -74,7 +74,7 @@ fun AppNavHost(
         // Favorites
         composable(AppDestination.Favorites.route) {
             CatalogScreen(
-                rubricId = null,
+                rubricsId = emptyList(),
                 rubricName = null,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
