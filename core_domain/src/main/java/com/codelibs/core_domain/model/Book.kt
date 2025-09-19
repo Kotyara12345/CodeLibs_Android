@@ -8,7 +8,7 @@ data class Book(
     val langCategory: String?,
     val fileFormat: String?,
     val addedBy: AddedBy,
-    val rating: Int?,
+    val rating: Double,
     val isFavorited: Boolean,
     val title: String?,
     val url: String?,

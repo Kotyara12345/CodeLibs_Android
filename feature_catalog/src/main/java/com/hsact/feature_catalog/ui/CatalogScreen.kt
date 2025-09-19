@@ -7,16 +7,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.codelibs.core_ui.components.screenPadding
 import com.hsact.feature_catalog.ui.components.BookItem
 import com.hsact.feature_catalog.ui.state.CatalogUiState
@@ -24,19 +26,50 @@ import com.hsact.feature_catalog.viewmodel.CatalogViewModel
 
 @Composable
 fun CatalogScreen(
-    rubricId: Int? = null,
+    rubricsId: List<Int> = emptyList(),
     rubricName: String? = null,
     onItemClick: (Int) -> Unit,
-    viewModel: CatalogViewModel = hiltViewModel()
+    viewModel: CatalogViewModel
 ) {
-    val state = viewModel.uiState.collectAsState().value
+    val state by viewModel.uiState.collectAsState()
+    val isLoadingMore by viewModel.isLoadingMore.collectAsState()
+
+    // Список для контроля скролла
+    val listState = rememberLazyListState()
 
     // Загружаем книги при изменении рубрики (или при старте)
-    LaunchedEffect(rubricId) {
-        viewModel.loadBooks(rubricId)
+    LaunchedEffect(rubricsId) {
+        // Загружаем только если uiState — Loading или список пуст
+        val shouldLoad = when (val s = state) {
+            is CatalogUiState.Success -> s.books.isEmpty()
+            is CatalogUiState.Error -> true
+            is CatalogUiState.Loading -> true
+        }
+        if (shouldLoad) {
+            viewModel.loadBooks(rubricsId, reset = true)
+        }
     }
 
-    Column(modifier = Modifier.fillMaxSize().screenPadding()) {
+    // Автоподгрузка при достижении конца списка
+    LaunchedEffect(listState, isLoadingMore) {
+        snapshotFlow { listState.layoutInfo.visibleItemsInfo.lastOrNull()?.index }
+            .collect { lastVisible ->
+                val total = listState.layoutInfo.totalItemsCount
+                if (
+                    lastVisible != null &&
+                    total >= 10 && // <-- минимальный размер списка для автоподгрузки
+                    lastVisible >= total - 3 &&
+                    !isLoadingMore &&
+                    viewModel.hasMore()
+                ) {
+                    viewModel.loadNextPage()
+                }
+            }
+    }
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .screenPadding()) {
         // Показываем заголовок категории, если он есть
         rubricName?.takeIf { it.isNotBlank() }?.let { name ->
             Text(
@@ -48,19 +81,37 @@ fun CatalogScreen(
             )
         }
 
-        when (state) {
+        when (val s = state) {
             is CatalogUiState.Loading -> {
                 Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             }
             is CatalogUiState.Error -> {
-                Text("Error: ${state.message}")
+                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text("Error: ${s.message}")
+                }
             }
             is CatalogUiState.Success -> {
-                LazyColumn {
-                    items(state.books) { book ->
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    items(s.books) { book ->
                         BookItem(book = book, onItemClick = onItemClick)
+                    }
+
+                    if (isLoadingMore) {
+                        item {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularProgressIndicator()
+                            }
+                        }
                     }
                 }
             }
