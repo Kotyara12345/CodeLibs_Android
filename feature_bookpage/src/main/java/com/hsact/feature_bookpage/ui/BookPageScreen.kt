@@ -27,10 +27,12 @@ import coil.request.ImageRequest
 import com.codelibs.core_ui.components.screenPadding
 import com.codelibs.core_ui.utils.fromHtmlToAnnotatedString
 import com.codelibs.core_ui.utils.toAuthorString
+import com.codelibs.core_ui.utils.toReadableFileSize
 import com.hsact.feature_bookpage.ui.components.MetaRow
 import com.hsact.feature_bookpage.ui.components.RubricItem
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
 import com.hsact.feature_bookpage.viewmodel.BookPageViewModel
+import java.util.Locale
 
 @Composable
 fun BookPageScreen(
@@ -110,7 +112,7 @@ fun BookPageScreen(
                     MetaRow("Год издания", book.yearRelease.toString())
                     MetaRow("Страниц", book.pagesNumber?.toString() ?: "-")
                     MetaRow("Тип файла", book.fileFormat ?: "-")
-                    MetaRow("Размер файла", book.fileSize.toString())
+                    MetaRow("Размер файла", book.fileSize.toReadableFileSize(Locale.getDefault()))
                     MetaRow("Издательство", book.publisher.name)
                     if (!book.translator.isNullOrEmpty()) {
                         MetaRow("Переводчик", book.translator ?: "-")
