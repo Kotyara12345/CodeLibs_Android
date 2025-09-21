@@ -51,6 +51,13 @@ fun RubricDTO.toDomain(): Rubric {
     )
 }
 
+fun AccountMiniDTO.toDomain(): AccountMini {
+    return AccountMini(
+        id = id,
+        username = username
+    )
+}
+
 private fun AuthorDTO.toDomain(): Author {
     return Author(
         id = id,
@@ -68,12 +75,5 @@ private fun PublisherDTO.toDomain(): Publisher {
         description = description,
         url = url,
         image = image
-    )
-}
-
-private fun AccountMiniDTO.toDomain(): AccountMini {
-    return AccountMini(
-        id = id,
-        username = username
     )
 }

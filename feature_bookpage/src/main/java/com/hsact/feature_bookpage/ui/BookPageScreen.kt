@@ -27,11 +27,16 @@ import coil.request.ImageRequest
 import com.codelibs.core_ui.components.screenPadding
 import com.codelibs.core_ui.utils.fromHtmlToAnnotatedString
 import com.codelibs.core_ui.utils.toAuthorString
+import com.codelibs.core_ui.utils.toReadableDate
 import com.codelibs.core_ui.utils.toReadableFileSize
+import com.hsact.feature_bookpage.ui.components.CommentItem
 import com.hsact.feature_bookpage.ui.components.MetaRow
 import com.hsact.feature_bookpage.ui.components.RubricItem
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
+import com.hsact.feature_bookpage.ui.state.CommentsUiState
 import com.hsact.feature_bookpage.viewmodel.BookPageViewModel
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
@@ -143,6 +148,40 @@ fun BookPageScreen(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text("Скачать")
+                }
+                Spacer(Modifier.height(24.dp))
+                Text(
+                    text = "Комментарии",
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Spacer(Modifier.height(8.dp))
+
+                when (val commentsState = state.comments) {
+                    is CommentsUiState.Loading -> {
+                        CircularProgressIndicator()
+                    }
+
+                    is CommentsUiState.Error -> {
+                        Text("Ошибка: ${commentsState.message}")
+                    }
+
+                    is CommentsUiState.Success -> {
+                        if (commentsState.comments.isEmpty()) {
+                            Text("Комментариев пока нет")
+                        } else {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(16.dp)
+                            ) {
+                                commentsState.comments.forEach { comment ->
+                                    CommentItem(
+                                        username = comment.user.username,
+                                        content = comment.content.fromHtmlToAnnotatedString().toString(),
+                                        date = comment.createdAt!!.toReadableDate()
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
