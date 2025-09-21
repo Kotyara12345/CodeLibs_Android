@@ -1,12 +1,12 @@
 package com.codelibs.core_data.mapper
 
-import com.codelibs.core_network.dto.AddedByDTO
+import com.codelibs.core_network.dto.AccountMiniDTO
 import com.codelibs.core_network.dto.AuthorDTO
 import com.codelibs.core_network.dto.BookDTO
 import com.codelibs.core_network.dto.PublisherDTO
 import com.codelibs.core_network.dto.RubricDTO
 import com.codelibs.core_network.dto.BooksResponse
-import com.codelibs.core_domain.model.AddedBy
+import com.codelibs.core_domain.model.AccountMini
 import com.codelibs.core_domain.model.Author
 import com.codelibs.core_domain.model.Book
 import com.codelibs.core_domain.model.Publisher
@@ -24,7 +24,8 @@ fun BookDTO.toDomain(): Book {
         publisher = publisher.toDomain(),
         langCategory = langCategory,
         fileFormat = fileFormat,
-        addedBy = addedBy.toDomain(),
+        fileSize = fileSize,
+        accountMini = addedBy.toDomain(),
         rating = rating,
         isFavorited = isFavorited,
         title = title,
@@ -50,6 +51,13 @@ fun RubricDTO.toDomain(): Rubric {
     )
 }
 
+fun AccountMiniDTO.toDomain(): AccountMini {
+    return AccountMini(
+        id = id,
+        username = username
+    )
+}
+
 private fun AuthorDTO.toDomain(): Author {
     return Author(
         id = id,
@@ -67,12 +75,5 @@ private fun PublisherDTO.toDomain(): Publisher {
         description = description,
         url = url,
         image = image
-    )
-}
-
-private fun AddedByDTO.toDomain(): AddedBy {
-    return AddedBy(
-        id = id,
-        username = username
     )
 }

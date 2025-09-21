@@ -4,6 +4,7 @@ import com.codelibs.core_network.api.BooksApiService
 import com.codelibs.core_data.mapper.toBookList
 import com.codelibs.core_data.mapper.toDomain
 import com.codelibs.core_domain.model.Book
+import com.codelibs.core_domain.model.Comment
 import com.codelibs.core_domain.model.Rubric
 import com.codelibs.core_domain.repository.BooksRepository
 import jakarta.inject.Inject
@@ -33,5 +34,8 @@ class BooksRepositoryImpl @Inject constructor(
     }
     override suspend fun getRubrics(search: String?): List<Rubric> {
         return api.getRubrics(search).map { it.toDomain() }
+    }
+    override suspend fun getComments(bookId: Int): List<Comment> {
+        return api.getComments(bookId).map { it.toDomain() }
     }
 }

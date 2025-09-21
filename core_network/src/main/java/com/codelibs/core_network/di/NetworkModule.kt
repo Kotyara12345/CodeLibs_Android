@@ -15,7 +15,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    private const val BASE_URL = "https://dev.codelibs.ru/api/v2/"
+    private const val BASE_URL = "https://codelibs.ru/api/v2/"
 
     @Provides
     @Singleton

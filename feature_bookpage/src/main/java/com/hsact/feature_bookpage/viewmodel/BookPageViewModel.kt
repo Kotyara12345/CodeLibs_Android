@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codelibs.core_domain.repository.BooksRepository
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
+import com.hsact.feature_bookpage.ui.state.CommentsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,23 +18,51 @@ class BookPageViewModel @Inject constructor(
     private val booksRepository: BooksRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow<BookPageUiState>(BookPageUiState.Loading)
     val uiState: StateFlow<BookPageUiState> = _uiState
 
     init {
         val id = savedStateHandle.get<Int>("bookId")
+        if (id != null) {
+            loadBookAndComments(id)
+        } else {
+            _uiState.value = BookPageUiState.Error("Invalid book ID")
+        }
+    }
+
+    private fun loadBookAndComments(bookId: Int) {
         viewModelScope.launch {
-            if (id != null) {
-                try {
-                    val book = booksRepository.getBook(id)
-                    _uiState.value = BookPageUiState.Success(book)
-                } catch (e: Exception) {
-                    _uiState.value = BookPageUiState.Error(e.message ?: "Unknown error")
-                    Log.e("CatalogViewModel", "Error loading books", e)
-                }
+            try {
+                val book = booksRepository.getBook(bookId)
+                _uiState.value = BookPageUiState.Success(book)
+
+                loadComments(bookId)
+            } catch (e: Exception) {
+                _uiState.value = BookPageUiState.Error(e.message ?: "Unknown error")
+                Log.e("BookPageViewModel", "Error loading book", e)
             }
-            else {
-                _uiState.value = BookPageUiState.Error("Invalid book ID")
+        }
+    }
+
+    fun loadComments(bookId: Int) {
+        viewModelScope.launch {
+            try {
+                val comments = booksRepository.getComments(bookId)
+                val currentState = _uiState.value
+                if (currentState is BookPageUiState.Success) {
+                    _uiState.value = currentState.copy(
+                        comments = CommentsUiState.Success(comments)
+                    )
+                }
+            } catch (e: Exception) {
+                val currentState = _uiState.value
+                if (currentState is BookPageUiState.Success) {
+                    _uiState.value = currentState.copy(
+                        comments = CommentsUiState.Error(e.message ?: "Error loading comments")
+                    )
+                }
+                Log.e("BookPageViewModel", "Error loading comments", e)
             }
         }
     }

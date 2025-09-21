@@ -1,6 +1,7 @@
 package com.codelibs.core_domain.repository
 
 import com.codelibs.core_domain.model.Book
+import com.codelibs.core_domain.model.Comment
 import com.codelibs.core_domain.model.Rubric
 
 interface BooksRepository {
@@ -14,4 +15,5 @@ interface BooksRepository {
 
     suspend fun getBook(id: Int): Book
     suspend fun getRubrics(search: String? = null): List<Rubric>
+    suspend fun getComments(bookId: Int): List<Comment>
 }
