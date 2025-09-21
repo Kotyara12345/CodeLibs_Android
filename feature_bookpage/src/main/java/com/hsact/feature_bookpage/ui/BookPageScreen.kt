@@ -53,132 +53,137 @@ fun BookPageScreen(
                     .screenPadding()
                     .verticalScroll(rememberScrollState())
             ) {
-                // Изображение книги
-                val book = state.book
-                book.image?.let { url ->
-                    AsyncImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(url)
-                            .crossfade(true)
-                            .build(),
-                        contentDescription = book.title,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(400.dp)
-                    )
-                    Spacer(Modifier.height(16.dp))
-                }
-                // Заголовок книги
-                Text(book.title.toString(), style = MaterialTheme.typography.titleLarge)
-                Spacer(Modifier.height(8.dp))
+                SuccessBookPageScreen(state)
+            }
+        }
+    }
+}
 
-                // Автор
-                Text(book.authors.toAuthorString())
-                Spacer(Modifier.height(16.dp))
+@Composable
+private fun SuccessBookPageScreen(state: BookPageUiState.Success) {
+    // Изображение книги
+    val book = state.book
+    book.image?.let { url ->
+        AsyncImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(url)
+                .crossfade(true)
+                .build(),
+            contentDescription = book.title,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(400.dp)
+        )
+        Spacer(Modifier.height(16.dp))
+    }
+    // Заголовок книги
+    Text(book.title.toString(), style = MaterialTheme.typography.titleLarge)
+    Spacer(Modifier.height(8.dp))
 
-                //Рубрики
-                LazyRow(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    items(
-                        items = book.rubrics,
-                        key = { rubric -> rubric.id } // если у рубрики есть id
-                    ) { rubric ->
-                        RubricItem(
-                            rubric = rubric,
-                            onItemClick = {}
-                        )
-                        Spacer(Modifier.width(8.dp))
-                    }
-                }
-                Spacer(Modifier.height(16.dp))
+    // Автор
+    Text(book.authors.toAuthorString())
+    Spacer(Modifier.height(16.dp))
 
-                //Оценки
-                Text(
-                    text = "⭐ ${book.rating}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(Modifier.height(16.dp))
+    //Рубрики
+    LazyRow(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        items(
+            items = book.rubrics,
+            key = { rubric -> rubric.id } // если у рубрики есть id
+        ) { rubric ->
+            RubricItem(
+                rubric = rubric,
+                onItemClick = {}
+            )
+            Spacer(Modifier.width(8.dp))
+        }
+    }
+    Spacer(Modifier.height(16.dp))
 
-                //Описание книги
-                Text(book.content?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
-                Spacer(Modifier.height(16.dp))
+    //Оценки
+    Text(
+        text = "⭐ ${book.rating}",
+        style = MaterialTheme.typography.bodyMedium
+    )
+    Spacer(Modifier.height(16.dp))
 
-                //Оглавление
-//                Text(book.tableOfContents?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
-//                Spacer(Modifier.height(16.dp))
+    //Описание книги
+    Text(book.content?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
+    Spacer(Modifier.height(16.dp))
 
-                //Мета
+    //Оглавление
+    //Text(book.tableOfContents?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
+    //Spacer(Modifier.height(16.dp))
+
+    //Мета
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        MetaRow("Год издания", book.yearRelease.toString())
+        MetaRow("Страниц", book.pagesNumber?.toString() ?: "-")
+        MetaRow("Тип файла", book.fileFormat ?: "-")
+        MetaRow("Размер файла", book.fileSize.toReadableFileSize(Locale.getDefault()))
+        MetaRow("Издательство", book.publisher.name)
+        if (!book.translator.isNullOrEmpty()) {
+            MetaRow("Переводчик", book.translator ?: "-")
+        }
+        MetaRow("Добавлено", book.accountMini.username)
+    }
+    Spacer(Modifier.height(16.dp))
+
+    //Кнопка "Купить"
+    Button(
+        onClick = {},
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Купить")
+    }
+    Spacer(Modifier.height(2.dp))
+    Text(
+        text = "Поддержите автора, купив эту книгу",
+        style = MaterialTheme.typography.bodyMedium.copy(
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    )
+    Spacer(Modifier.height(16.dp))
+
+    //Кнопка "Скачать"
+    Button(
+        onClick = {},
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Text("Скачать")
+    }
+    Spacer(Modifier.height(24.dp))
+    Text(
+        text = "Комментарии",
+        style = MaterialTheme.typography.titleMedium
+    )
+    Spacer(Modifier.height(8.dp))
+
+    when (val commentsState = state.comments) {
+        is CommentsUiState.Loading -> {
+            CircularProgressIndicator()
+        }
+
+        is CommentsUiState.Error -> {
+            Text("Ошибка: ${commentsState.message}")
+        }
+
+        is CommentsUiState.Success -> {
+            if (commentsState.comments.isEmpty()) {
+                Text("Комментариев пока нет")
+            } else {
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    MetaRow("Год издания", book.yearRelease.toString())
-                    MetaRow("Страниц", book.pagesNumber?.toString() ?: "-")
-                    MetaRow("Тип файла", book.fileFormat ?: "-")
-                    MetaRow("Размер файла", book.fileSize.toReadableFileSize(Locale.getDefault()))
-                    MetaRow("Издательство", book.publisher.name)
-                    if (!book.translator.isNullOrEmpty()) {
-                        MetaRow("Переводчик", book.translator ?: "-")
-                    }
-                    MetaRow("Добавлено", book.accountMini.username)
-                }
-                Spacer(Modifier.height(16.dp))
-
-                //Кнопка "Купить"
-                Button(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Купить")
-                }
-                Spacer(Modifier.height(2.dp))
-                Text(
-                    text = "Поддержите автора, купив эту книгу",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                )
-                Spacer(Modifier.height(16.dp))
-
-                //Кнопка "Скачать"
-                Button(
-                    onClick = {},
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text("Скачать")
-                }
-                Spacer(Modifier.height(24.dp))
-                Text(
-                    text = "Комментарии",
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Spacer(Modifier.height(8.dp))
-
-                when (val commentsState = state.comments) {
-                    is CommentsUiState.Loading -> {
-                        CircularProgressIndicator()
-                    }
-
-                    is CommentsUiState.Error -> {
-                        Text("Ошибка: ${commentsState.message}")
-                    }
-
-                    is CommentsUiState.Success -> {
-                        if (commentsState.comments.isEmpty()) {
-                            Text("Комментариев пока нет")
-                        } else {
-                            Column(
-                                verticalArrangement = Arrangement.spacedBy(16.dp)
-                            ) {
-                                commentsState.comments.forEach { comment ->
-                                    CommentItem(
-                                        username = comment.user.username,
-                                        content = comment.content.fromHtmlToAnnotatedString().toString(),
-                                        date = comment.createdAt!!.toReadableDate()
-                                    )
-                                }
-                            }
-                        }
+                    commentsState.comments.forEach { comment ->
+                        CommentItem(
+                            username = comment.user.username,
+                            content = comment.content.fromHtmlToAnnotatedString().toString(),
+                            date = comment.createdAt!!.toReadableDate()
+                        )
                     }
                 }
             }
