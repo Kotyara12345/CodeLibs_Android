@@ -35,8 +35,6 @@ import com.hsact.feature_bookpage.ui.components.RubricItem
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
 import com.hsact.feature_bookpage.ui.state.CommentsUiState
 import com.hsact.feature_bookpage.viewmodel.BookPageViewModel
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
