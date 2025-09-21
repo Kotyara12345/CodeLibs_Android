@@ -110,10 +110,12 @@ fun BookPageScreen(
                     MetaRow("Год издания", book.yearRelease.toString())
                     MetaRow("Страниц", book.pagesNumber?.toString() ?: "-")
                     MetaRow("Тип файла", book.fileFormat ?: "-")
-                    MetaRow("Размер файла", book.fileFormat ?: "-")
+                    MetaRow("Размер файла", book.fileSize.toString())
                     MetaRow("Издательство", book.publisher.name)
-                    MetaRow("Переводчик", book.translator ?: "-")
-                    MetaRow("Добавлено", book.addedBy.username)
+                    if (!book.translator.isNullOrEmpty()) {
+                        MetaRow("Переводчик", book.translator ?: "-")
+                    }
+                    MetaRow("Добавлено", book.accountMini.username)
                 }
                 Spacer(Modifier.height(16.dp))
 
