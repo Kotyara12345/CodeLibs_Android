@@ -50,7 +50,8 @@ fun AppNavHost(
                             rubricName
                         )
                     ) {
-                        popUpTo(AppDestination.Categories.route) { inclusive = true }
+                        // Чтобы не было нескольких экземпляров экрана Catalog
+                        //popUpTo(AppDestination.Categories.route) { inclusive = true }
                     }
                 }
             )
