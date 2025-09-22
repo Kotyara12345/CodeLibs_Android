@@ -17,7 +17,13 @@ import com.codelibs.core_ui.components.screenPadding
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
 
 @Composable
-internal fun BookPageContent(state: BookPageUiState.Success) {
+internal fun BookPageContent(
+    state: BookPageUiState.Success,
+    onRubricClick: (Int, String) -> Unit,
+    onDownloadClick: () -> Unit,
+    onBuyClick: () -> Unit,
+    onSimilarBookClick: (Int) -> Unit
+) {
     Column(
         Modifier
             .fillMaxSize()
@@ -38,22 +44,48 @@ internal fun BookPageContent(state: BookPageUiState.Success) {
             )
             Spacer(Modifier.height(16.dp))
         }
-        BookInfoSection(book, Modifier.fillMaxWidth().screenPadding())
+        BookInfoSection(
+            book,
+            Modifier
+                .fillMaxWidth()
+                .screenPadding(),
+            onRubricClick
+        )
 
         //Оглавление
         //Text(book.tableOfContents?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
         //Spacer(Modifier.height(16.dp))
 
         //Мета
-        BookMetaSection(book, Modifier.fillMaxWidth().screenPadding())
+        BookMetaSection(
+            book, Modifier
+                .fillMaxWidth()
+                .screenPadding()
+        )
         Spacer(Modifier.height(16.dp))
 
-        BookActionSection(Modifier.fillMaxWidth().screenPadding())
+        BookActionSection(
+            Modifier
+                .fillMaxWidth()
+                .screenPadding(),
+            onBuyClick,
+            onDownloadClick
+        )
         Spacer(Modifier.height(24.dp))
 
-        SimilarBooksSection(state.similarBooks, Modifier.fillMaxWidth().screenPadding())
+        SimilarBooksSection(
+            state.similarBooks,
+            Modifier
+                .fillMaxWidth()
+                .screenPadding(),
+            onItemClick = onSimilarBookClick
+        )
         Spacer(Modifier.height(24.dp))
 
-        BookCommentsSection(state.comments, Modifier.fillMaxWidth().screenPadding())
+        BookCommentsSection(
+            state.comments, Modifier
+                .fillMaxWidth()
+                .screenPadding()
+        )
     }
 }

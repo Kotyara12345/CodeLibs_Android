@@ -12,11 +12,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
-internal fun BookActionSection(modifier: Modifier) {
+internal fun BookActionSection(
+    modifier: Modifier,
+    onBuyClick: () -> Unit,
+    onDownloadClick: () -> Unit) {
     Column(modifier = modifier) {
         //Кнопка "Купить"
         Button(
-            onClick = {},
+            onClick = onBuyClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Купить")
@@ -32,7 +35,7 @@ internal fun BookActionSection(modifier: Modifier) {
 
         //Кнопка "Скачать"
         Button(
-            onClick = {},
+            onClick = onDownloadClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Скачать")

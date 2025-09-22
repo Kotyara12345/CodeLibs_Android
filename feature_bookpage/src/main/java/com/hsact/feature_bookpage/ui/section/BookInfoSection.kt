@@ -20,7 +20,10 @@ import com.codelibs.core_ui.utils.toAuthorString
 import com.hsact.feature_bookpage.ui.components.RubricItem
 
 @Composable
-internal fun BookInfoSection(book: Book, modifier: Modifier) {
+internal fun BookInfoSection(
+    book: Book,
+    modifier: Modifier,
+    onRubricClick: (Int, String) -> Unit) {
     Column {
         // Заголовок книги
         Text(
@@ -44,7 +47,7 @@ internal fun BookInfoSection(book: Book, modifier: Modifier) {
             ) { rubric ->
                 RubricItem(
                     rubric = rubric,
-                    onItemClick = {}
+                    onItemClick = onRubricClick
                 )
             }
         }

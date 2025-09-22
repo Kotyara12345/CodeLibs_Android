@@ -19,7 +19,8 @@ import com.hsact.feature_bookpage.ui.state.SimilarBooksUiState
 @Composable
 internal fun SimilarBooksSection(
     state: SimilarBooksUiState,
-    modifier: Modifier
+    modifier: Modifier,
+    onItemClick: (Int) -> Unit
 ) {
     Text(
         text = "Похожие книги",
@@ -51,7 +52,7 @@ internal fun SimilarBooksSection(
                     ) { book ->
                         SimilarBookItem(
                             book = book,
-                            onItemClick = {}
+                            onItemClick = onItemClick
                         )
                     }
                 }
