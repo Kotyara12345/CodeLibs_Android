@@ -13,8 +13,6 @@ import com.hsact.feature_bookpage.viewmodel.BookPageViewModel
 fun BookPageScreen(
     viewModel: BookPageViewModel = hiltViewModel(),
     onRubricClick: (Int, String) -> Unit,
-    onDownloadClick: () -> Unit,
-    onBuyClick: () -> Unit,
     onSimilarBookClick: (Int) -> Unit
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
@@ -28,8 +26,8 @@ fun BookPageScreen(
                 onRubricClick = { rubricId, rubricName ->
                     onRubricClick(rubricId, rubricName)
                 },
-                onDownloadClick = { onDownloadClick() },
-                onBuyClick = { onBuyClick() },
+                onDownloadClick = { viewModel.onDownloadClick() },
+                onBuyClick = { viewModel.onBuyClick() },
                 onSimilarBookClick = { otherBookId ->
                     onSimilarBookClick(otherBookId)
                 }

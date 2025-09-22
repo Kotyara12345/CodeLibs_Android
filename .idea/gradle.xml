@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/core" />
             <option value="$PROJECT_DIR$/core_data" />
             <option value="$PROJECT_DIR$/core_domain" />
+            <option value="$PROJECT_DIR$/core_download" />
             <option value="$PROJECT_DIR$/core_network" />
             <option value="$PROJECT_DIR$/core_ui" />
             <option value="$PROJECT_DIR$/feature" />

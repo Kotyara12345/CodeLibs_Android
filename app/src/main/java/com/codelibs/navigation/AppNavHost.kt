@@ -111,8 +111,6 @@ fun AppNavHost(
                 onRubricClick = { rubricId, rubricName ->
                     navController.navigate(AppDestination.Catalog.createRoute(rubricId, rubricName))
                 },
-                onDownloadClick = { /* TODO: скачать книгу */ },
-                onBuyClick = { /* TODO: открыть ссылку */ },
                 onSimilarBookClick = { otherBookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(otherBookId))
                 }

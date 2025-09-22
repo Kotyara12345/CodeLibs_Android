@@ -31,19 +31,11 @@ class BookPageViewModel @Inject constructor(
             _uiState.value = BookPageUiState.Error("Invalid book ID")
         }
     }
+    fun onDownloadClick() {
 
-    private fun loadBookAndSimilarBooksAndComments(bookId: Int) {
-        viewModelScope.launch {
-            try {
-                val book = booksRepository.getBook(bookId)
-                _uiState.value = BookPageUiState.Success(book)
-                loadSimilarBooks(bookId)
-                loadComments(bookId)
-            } catch (e: Exception) {
-                _uiState.value = BookPageUiState.Error(e.message ?: "Unknown error")
-                Log.e("BookPageViewModel", "Error loading book", e)
-            }
-        }
+    }
+    fun onBuyClick() {
+
     }
 
     fun loadSimilarBooks(bookId: Int) {
@@ -87,6 +79,20 @@ class BookPageViewModel @Inject constructor(
                     )
                 }
                 Log.e("BookPageViewModel", "Error loading comments", e)
+            }
+        }
+    }
+
+    private fun loadBookAndSimilarBooksAndComments(bookId: Int) {
+        viewModelScope.launch {
+            try {
+                val book = booksRepository.getBook(bookId)
+                _uiState.value = BookPageUiState.Success(book)
+                loadSimilarBooks(bookId)
+                loadComments(bookId)
+            } catch (e: Exception) {
+                _uiState.value = BookPageUiState.Error(e.message ?: "Unknown error")
+                Log.e("BookPageViewModel", "Error loading book", e)
             }
         }
     }
