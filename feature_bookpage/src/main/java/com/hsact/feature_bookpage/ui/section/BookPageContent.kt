@@ -21,7 +21,6 @@ internal fun BookPageContent(state: BookPageUiState.Success) {
     Column(
         Modifier
             .fillMaxSize()
-            .screenPadding()
             .verticalScroll(rememberScrollState())
     ) {
         // Изображение книги
@@ -39,22 +38,22 @@ internal fun BookPageContent(state: BookPageUiState.Success) {
             )
             Spacer(Modifier.height(16.dp))
         }
-        BookInfoSection(book)
+        BookInfoSection(book, Modifier.fillMaxWidth().screenPadding())
 
         //Оглавление
         //Text(book.tableOfContents?.fromHtmlToAnnotatedString() ?: AnnotatedString(""))
         //Spacer(Modifier.height(16.dp))
 
         //Мета
-        BookMetaSection(book)
+        BookMetaSection(book, Modifier.fillMaxWidth().screenPadding())
         Spacer(Modifier.height(16.dp))
 
-        BookActionSection()
+        BookActionSection(Modifier.fillMaxWidth().screenPadding())
         Spacer(Modifier.height(24.dp))
 
-        SimilarBooksSection(state.similarBooks)
+        SimilarBooksSection(state.similarBooks, Modifier.fillMaxWidth().screenPadding())
         Spacer(Modifier.height(24.dp))
 
-        BookCommentsSection(state.comments)
+        BookCommentsSection(state.comments, Modifier.fillMaxWidth().screenPadding())
     }
 }
