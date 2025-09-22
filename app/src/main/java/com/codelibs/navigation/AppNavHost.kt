@@ -50,7 +50,7 @@ fun AppNavHost(
                             rubricName
                         )
                     ) {
-                        // Чтобы не было нескольких экземпляров экрана Catalog
+                        // Чтобы убрать из backStack экран каталога, когда нажмётся назад
                         //popUpTo(AppDestination.Categories.route) { inclusive = true }
                     }
                 }
