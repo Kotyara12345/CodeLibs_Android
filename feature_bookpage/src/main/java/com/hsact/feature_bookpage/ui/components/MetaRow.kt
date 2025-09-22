@@ -10,7 +10,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
-fun MetaRow(
+internal fun MetaRow(
     key: String,
     value: String
 ) {

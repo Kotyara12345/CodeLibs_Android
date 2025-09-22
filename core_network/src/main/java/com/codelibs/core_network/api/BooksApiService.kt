@@ -29,6 +29,11 @@ interface BooksApiService {
         @Query("search") search: String? = null,
     ): List<RubricDTO>
 
+    @GET("books/{id}/similar_books/")
+    suspend fun getSimilarBooks(
+        @Path("id") bookId: Int,
+    ): List<BookDTO>
+
     @GET("books/{book_id}/comments/")
     suspend fun getComments(
         @Path("book_id") bookId: Int,

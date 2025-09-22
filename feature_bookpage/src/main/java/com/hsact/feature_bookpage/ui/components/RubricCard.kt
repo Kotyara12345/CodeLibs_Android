@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import com.codelibs.core_domain.model.Rubric
 
 @Composable
-fun RubricItem(
+internal fun RubricItem(
     rubric: Rubric,
     onItemClick: (Int) -> Unit
 ) {
