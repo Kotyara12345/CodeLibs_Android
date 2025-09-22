@@ -34,9 +34,9 @@ fun AppScaffold() {
         )
         val topBarDestinations = listOf(
             AppDestination.Home.route,
-            AppDestination.Categories.route,
-            AppDestination.Favorites.route,
-            AppDestination.Account.route
+//            AppDestination.Categories.route,
+//            AppDestination.Favorites.route,
+//            AppDestination.Account.route
         )
 
         Scaffold(
