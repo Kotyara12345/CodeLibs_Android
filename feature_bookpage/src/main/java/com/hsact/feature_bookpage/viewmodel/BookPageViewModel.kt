@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.codelibs.core_domain.repository.BooksRepository
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
 import com.hsact.feature_bookpage.ui.state.CommentsUiState
+import com.hsact.feature_bookpage.ui.state.SimilarBooksUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,22 +26,45 @@ class BookPageViewModel @Inject constructor(
     init {
         val id = savedStateHandle.get<Int>("bookId")
         if (id != null) {
-            loadBookAndComments(id)
+            loadBookAndSimilarBooksAndComments(id)
         } else {
             _uiState.value = BookPageUiState.Error("Invalid book ID")
         }
     }
 
-    private fun loadBookAndComments(bookId: Int) {
+    private fun loadBookAndSimilarBooksAndComments(bookId: Int) {
         viewModelScope.launch {
             try {
                 val book = booksRepository.getBook(bookId)
                 _uiState.value = BookPageUiState.Success(book)
-
+                loadSimilarBooks(bookId)
                 loadComments(bookId)
             } catch (e: Exception) {
                 _uiState.value = BookPageUiState.Error(e.message ?: "Unknown error")
                 Log.e("BookPageViewModel", "Error loading book", e)
+            }
+        }
+    }
+
+    fun loadSimilarBooks(bookId: Int) {
+        viewModelScope.launch {
+            try {
+                val similarBooks = booksRepository.getSimilarBooks(bookId)
+                val currentState = _uiState.value
+                if (currentState is BookPageUiState.Success) {
+                    _uiState.value = currentState.copy(
+                        similarBooks = SimilarBooksUiState.Success(similarBooks)
+                    )
+                }
+            } catch (e: Exception) {
+                val currentState = _uiState.value
+                if (currentState is BookPageUiState.Success) {
+                    _uiState.value = currentState.copy(
+                        similarBooks = SimilarBooksUiState.Error(
+                            e.message ?: "Error loading similar books"
+                        )
+                    )
+                }
             }
         }
     }

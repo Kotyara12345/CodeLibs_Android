@@ -35,6 +35,9 @@ class BooksRepositoryImpl @Inject constructor(
     override suspend fun getRubrics(search: String?): List<Rubric> {
         return api.getRubrics(search).map { it.toDomain() }
     }
+    override suspend fun getSimilarBooks(bookId: Int): List<Book> {
+        return api.getSimilarBooks(bookId).map { it.toDomain() }
+    }
     override suspend fun getComments(bookId: Int): List<Comment> {
         return api.getComments(bookId).map { it.toDomain() }
     }

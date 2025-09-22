@@ -51,6 +51,10 @@ internal fun BookPageContent(state: BookPageUiState.Success) {
 
         BookActionSection()
         Spacer(Modifier.height(24.dp))
+
+        SimilarBooksSection(state.similarBooks)
+        Spacer(Modifier.height(24.dp))
+
         BookCommentsSection(state.comments)
     }
 }
