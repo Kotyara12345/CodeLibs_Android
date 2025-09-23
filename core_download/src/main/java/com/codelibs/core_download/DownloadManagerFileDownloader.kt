@@ -3,6 +3,7 @@ package com.codelibs.core_download
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
+import android.util.Log
 import androidx.core.net.toUri
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
@@ -15,7 +16,7 @@ class DownloadManagerFileDownloader @Inject constructor(
     fun download(
         url: String,
         fileName: String,
-        onStatusChange: (isDownloading: Boolean) -> Unit
+        onStatusChange: (progress: Int, isDownloading: Boolean) -> Unit
     ): Long {
         val request = DownloadManager.Request(url.toUri())
             .setTitle(fileName)
@@ -26,8 +27,9 @@ class DownloadManagerFileDownloader @Inject constructor(
         val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
         val downloadId = dm.enqueue(request)
 
-        downloadObserver.observeDownload(downloadId) { isDownloading ->
-            onStatusChange(isDownloading)
+        downloadObserver.observeDownload(downloadId) { progress, isDownloading ->
+            onStatusChange(progress, isDownloading)
+            Log.d("FileDownloader", "Download progress: $progress%")
         }
         return downloadId
     }

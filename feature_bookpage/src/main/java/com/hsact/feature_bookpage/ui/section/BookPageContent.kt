@@ -69,6 +69,7 @@ internal fun BookPageContent(
                 .fillMaxWidth()
                 .screenPadding(),
             state.isDownloading,
+            state.downloadProgress,
             onBuyClick,
             onDownloadClick
         )

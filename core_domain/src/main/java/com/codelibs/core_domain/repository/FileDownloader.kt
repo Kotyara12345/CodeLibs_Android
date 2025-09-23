@@ -10,6 +10,6 @@ interface FileDownloader {
     fun download(
         url: String,
         fileName: String,
-        onStatusChange: (isDownloading: Boolean) -> Unit
+        onStatusChange: (progress: Int, isDownloading: Boolean) -> Unit
     ): Long // возвращаем downloadId
 }

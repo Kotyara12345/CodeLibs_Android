@@ -1,7 +1,5 @@
 package com.hsact.feature_bookpage.viewmodel
 
-import android.app.DownloadManager
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -12,8 +10,6 @@ import com.hsact.feature_bookpage.ui.state.BookPageUiState
 import com.hsact.feature_bookpage.ui.state.CommentsUiState
 import com.hsact.feature_bookpage.ui.state.SimilarBooksUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -23,7 +19,6 @@ import javax.inject.Inject
 class BookPageViewModel @Inject constructor(
     private val booksRepository: BooksRepository,
     private val fileDownloader: FileDownloader,
-    @param:ApplicationContext private val context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -50,12 +45,16 @@ class BookPageViewModel @Inject constructor(
                 val extension = url.substringAfterLast('.', "pdf")
                 val fileName = "$title.$extension"
 
-                currentDownloadId = fileDownloader.download(url, fileName) { isDownloading ->
-                    val cs = _uiState.value
-                    if (cs is BookPageUiState.Success) {
-                        _uiState.value = cs.copy(isDownloading = isDownloading)
+                currentDownloadId =
+                    fileDownloader.download(url, fileName) { progress, isDownloading ->
+                        val currentState = _uiState.value
+                        if (currentState is BookPageUiState.Success) {
+                            _uiState.value = currentState.copy(
+                                downloadProgress = progress,
+                                isDownloading = isDownloading
+                            )
+                        }
                     }
-                }
             }
         }
     }
