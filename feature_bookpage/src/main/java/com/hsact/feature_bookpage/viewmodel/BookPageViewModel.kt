@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.codelibs.core_domain.repository.BooksRepository
+import com.codelibs.core_domain.repository.FileDownloader
 import com.hsact.feature_bookpage.ui.state.BookPageUiState
 import com.hsact.feature_bookpage.ui.state.CommentsUiState
 import com.hsact.feature_bookpage.ui.state.SimilarBooksUiState
@@ -17,6 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookPageViewModel @Inject constructor(
     private val booksRepository: BooksRepository,
+    private val fileDownloader: FileDownloader,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -32,16 +34,32 @@ class BookPageViewModel @Inject constructor(
         }
     }
 
-    private fun loadBookAndSimilarBooksAndComments(bookId: Int) {
-        viewModelScope.launch {
-            try {
-                val book = booksRepository.getBook(bookId)
-                _uiState.value = BookPageUiState.Success(book)
-                loadSimilarBooks(bookId)
-                loadComments(bookId)
-            } catch (e: Exception) {
-                _uiState.value = BookPageUiState.Error(e.message ?: "Unknown error")
-                Log.e("BookPageViewModel", "Error loading book", e)
+    fun onDownloadClick() {
+        val currentState = _uiState.value
+        if (currentState is BookPageUiState.Success) {
+            val url = currentState.book.bookFile
+            val title = currentState.book.title
+
+            if (!url.isNullOrEmpty()) {
+                // Получаем расширение из URL
+                val extension =
+                    url.substringAfterLast('.', "pdf") // на случай, если нет точки
+                val fileName = "$title.$extension"
+                fileDownloader.download(url, fileName)
+            } else {
+                Log.e("BookPageViewModel", "No download URL available")
+            }
+        }
+    }
+
+    fun onBuyClick() {
+        val currentState = _uiState.value
+        if (currentState is BookPageUiState.Success) {
+            val url = currentState.book.url // ссылка на покупку
+            if (!url.isNullOrEmpty()) {
+                // TODO: открыть ссылку через Intent
+            } else {
+                Log.e("BookPageViewModel", "No buy URL available")
             }
         }
     }
@@ -87,6 +105,20 @@ class BookPageViewModel @Inject constructor(
                     )
                 }
                 Log.e("BookPageViewModel", "Error loading comments", e)
+            }
+        }
+    }
+
+    private fun loadBookAndSimilarBooksAndComments(bookId: Int) {
+        viewModelScope.launch {
+            try {
+                val book = booksRepository.getBook(bookId)
+                _uiState.value = BookPageUiState.Success(book)
+                loadSimilarBooks(bookId)
+                loadComments(bookId)
+            } catch (e: Exception) {
+                _uiState.value = BookPageUiState.Error(e.message ?: "Unknown error")
+                Log.e("BookPageViewModel", "Error loading book", e)
             }
         }
     }

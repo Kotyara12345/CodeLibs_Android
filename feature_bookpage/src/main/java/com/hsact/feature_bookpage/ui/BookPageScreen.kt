@@ -11,7 +11,9 @@ import com.hsact.feature_bookpage.viewmodel.BookPageViewModel
 
 @Composable
 fun BookPageScreen(
-    viewModel: BookPageViewModel = hiltViewModel()
+    viewModel: BookPageViewModel = hiltViewModel(),
+    onRubricClick: (Int, String) -> Unit,
+    onSimilarBookClick: (Int) -> Unit
 ) {
     val state = viewModel.uiState.collectAsStateWithLifecycle().value
 
@@ -19,7 +21,17 @@ fun BookPageScreen(
         is BookPageUiState.Loading -> CircularProgressIndicator()
         is BookPageUiState.Error -> Text("Error: ${state.message}")
         is BookPageUiState.Success -> {
-            BookPageContent(state)
+            BookPageContent(
+                state = state,
+                onRubricClick = { rubricId, rubricName ->
+                    onRubricClick(rubricId, rubricName)
+                },
+                onDownloadClick = { viewModel.onDownloadClick() },
+                onBuyClick = { viewModel.onBuyClick() },
+                onSimilarBookClick = { otherBookId ->
+                    onSimilarBookClick(otherBookId)
+                }
+            )
         }
     }
 }

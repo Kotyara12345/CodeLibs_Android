@@ -13,13 +13,13 @@ import com.codelibs.core_domain.model.Rubric
 @Composable
 internal fun RubricItem(
     rubric: Rubric,
-    onItemClick: (Int) -> Unit
+    onItemClick: (Int, String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
-            .clickable { onItemClick(rubric.id) }
+            .clickable { onItemClick(rubric.id, rubric.name) }
     ) {
         Text(rubric.name, modifier = Modifier.padding(8.dp))
     }

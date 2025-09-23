@@ -16,35 +16,37 @@ import com.hsact.feature_bookpage.ui.components.CommentItem
 import com.hsact.feature_bookpage.ui.state.CommentsUiState
 
 @Composable
-internal fun BookCommentsSection(state: CommentsUiState) {
-    Text(
-        text = "Комментарии",
-        style = MaterialTheme.typography.titleMedium
-    )
-    Spacer(Modifier.height(8.dp))
-    when (val state = state) {
-        is CommentsUiState.Loading -> {
-            CircularProgressIndicator()
-        }
+internal fun BookCommentsSection(state: CommentsUiState, modifier: Modifier) {
+    Column(modifier = modifier) {
+        Text(
+            text = "Комментарии",
+            style = MaterialTheme.typography.titleMedium
+        )
+        Spacer(Modifier.height(8.dp))
+        when (val state = state) {
+            is CommentsUiState.Loading -> {
+                CircularProgressIndicator()
+            }
 
-        is CommentsUiState.Error -> {
-            Text("Ошибка: ${state.message}")
-        }
+            is CommentsUiState.Error -> {
+                Text("Ошибка: ${state.message}")
+            }
 
-        is CommentsUiState.Success -> {
-            if (state.comments.isEmpty()) {
-                Text("Комментариев пока нет")
-            } else {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    state.comments.forEach { comment ->
-                        CommentItem(
-                            username = comment.user.username,
-                            content = comment.content.fromHtmlToAnnotatedString()
-                                .toString(),
-                            date = comment.createdAt!!.toReadableDate()
-                        )
+            is CommentsUiState.Success -> {
+                if (state.comments.isEmpty()) {
+                    Text("Комментариев пока нет")
+                } else {
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        state.comments.forEach { comment ->
+                            CommentItem(
+                                username = comment.user.username,
+                                content = comment.content.fromHtmlToAnnotatedString()
+                                    .toString(),
+                                date = comment.createdAt!!.toReadableDate()
+                            )
+                        }
                     }
                 }
             }

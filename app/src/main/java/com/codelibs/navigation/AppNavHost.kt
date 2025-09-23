@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import com.codelibs.feature_profile.ui.ProfileScreen
 import com.codelibs.feature_rubrics.ui.RubricsScreen
 import com.hsact.feature_bookpage.ui.BookPageScreen
+import com.hsact.feature_bookpage.viewmodel.BookPageViewModel
 import com.hsact.feature_catalog.ui.CatalogScreen
 import com.hsact.feature_catalog.viewmodel.CatalogViewModel
 
@@ -49,7 +50,8 @@ fun AppNavHost(
                             rubricName
                         )
                     ) {
-                        popUpTo(AppDestination.Categories.route) { inclusive = true }
+                        // Чтобы убрать из backStack экран каталога, когда нажмётся назад
+                        //popUpTo(AppDestination.Categories.route) { inclusive = true }
                     }
                 }
             )
@@ -100,8 +102,19 @@ fun AppNavHost(
         composable(
             route = AppDestination.BookPage.route,
             arguments = listOf(navArgument("bookId") { type = NavType.IntType })
-        ) {
-            BookPageScreen()
+        ) { backStackEntry ->
+            // создаём viewModel с backStackEntry — чтобы Hilt передал SavedStateHandle с bookId
+            val viewModel: BookPageViewModel = hiltViewModel(backStackEntry)
+
+            BookPageScreen(
+                viewModel = viewModel,
+                onRubricClick = { rubricId, rubricName ->
+                    navController.navigate(AppDestination.Catalog.createRoute(rubricId, rubricName))
+                },
+                onSimilarBookClick = { otherBookId ->
+                    navController.navigate(AppDestination.BookPage.createRoute(otherBookId))
+                }
+            )
         }
     }
 }
