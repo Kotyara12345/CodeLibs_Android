@@ -1,4 +1,4 @@
-package com.codelibs.core_ui
+package com.codelibs.core_download
 
 import org.junit.Test
 
