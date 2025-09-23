@@ -1,18 +1,16 @@
-package com.codelibs.core_data.repository
+package com.codelibs.core_download
 
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
 import androidx.core.net.toUri
-import com.codelibs.core_domain.repository.FileDownloader
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class DownloadManagerFileDownloader @Inject constructor(
     @param:ApplicationContext private val context: Context
-) : FileDownloader {
-
-    override fun download(url: String, fileName: String) {
+) {
+    fun download(url: String, fileName: String) {
         val request = DownloadManager.Request(url.toUri())
             .setTitle(fileName)
             .setDescription("Downloading...")
