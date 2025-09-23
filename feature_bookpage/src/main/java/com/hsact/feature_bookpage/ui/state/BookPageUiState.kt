@@ -6,6 +6,7 @@ sealed class BookPageUiState {
     object Loading : BookPageUiState()
     data class Success(
         val book: Book,
+        val isDownloading: Boolean = false,
         val similarBooks: SimilarBooksUiState = SimilarBooksUiState.Loading,
         val comments: CommentsUiState = CommentsUiState.Loading
     ) : BookPageUiState()

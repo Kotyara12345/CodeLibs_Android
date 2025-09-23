@@ -30,14 +30,13 @@ internal fun BookPageContent(
             .verticalScroll(rememberScrollState())
     ) {
         // Изображение книги
-        val book = state.book
-        book.image?.let { url ->
+        state.book.image?.let { url ->
             AsyncImage(
                 model = Builder(LocalContext.current)
                     .data(url)
                     .crossfade(true)
                     .build(),
-                contentDescription = book.title,
+                contentDescription = state.book.title,
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(400.dp)
@@ -45,7 +44,7 @@ internal fun BookPageContent(
             Spacer(Modifier.height(16.dp))
         }
         BookInfoSection(
-            book,
+            state.book,
             Modifier
                 .fillMaxWidth()
                 .screenPadding(),
@@ -58,7 +57,8 @@ internal fun BookPageContent(
 
         //Мета
         BookMetaSection(
-            book, Modifier
+            state.book,
+            Modifier
                 .fillMaxWidth()
                 .screenPadding()
         )
@@ -68,6 +68,7 @@ internal fun BookPageContent(
             Modifier
                 .fillMaxWidth()
                 .screenPadding(),
+            state.isDownloading,
             onBuyClick,
             onDownloadClick
         )
@@ -83,7 +84,8 @@ internal fun BookPageContent(
         Spacer(Modifier.height(24.dp))
 
         BookCommentsSection(
-            state.comments, Modifier
+            state.comments,
+            Modifier
                 .fillMaxWidth()
                 .screenPadding()
         )

@@ -1,5 +1,7 @@
 package com.hsact.feature_bookpage.viewmodel
 
+import android.app.DownloadManager
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -10,6 +12,8 @@ import com.hsact.feature_bookpage.ui.state.BookPageUiState
 import com.hsact.feature_bookpage.ui.state.CommentsUiState
 import com.hsact.feature_bookpage.ui.state.SimilarBooksUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -19,6 +23,7 @@ import javax.inject.Inject
 class BookPageViewModel @Inject constructor(
     private val booksRepository: BooksRepository,
     private val fileDownloader: FileDownloader,
+    @param:ApplicationContext private val context: Context,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -34,6 +39,7 @@ class BookPageViewModel @Inject constructor(
         }
     }
 
+    private var currentDownloadId: Long? = null
     fun onDownloadClick() {
         val currentState = _uiState.value
         if (currentState is BookPageUiState.Success) {
@@ -41,13 +47,25 @@ class BookPageViewModel @Inject constructor(
             val title = currentState.book.title
 
             if (!url.isNullOrEmpty()) {
-                // Получаем расширение из URL
-                val extension =
-                    url.substringAfterLast('.', "pdf") // на случай, если нет точки
+                val extension = url.substringAfterLast('.', "pdf")
                 val fileName = "$title.$extension"
-                fileDownloader.download(url, fileName)
-            } else {
-                Log.e("BookPageViewModel", "No download URL available")
+
+                currentDownloadId = fileDownloader.download(url, fileName) { isDownloading ->
+                    val cs = _uiState.value
+                    if (cs is BookPageUiState.Success) {
+                        _uiState.value = cs.copy(isDownloading = isDownloading)
+                    }
+                }
+            }
+        }
+    }
+
+    fun onDownloadCompleted(id: Long) {
+        // проверим, что это наш последний запрос
+        if (id == currentDownloadId) {
+            val currentState = _uiState.value
+            if (currentState is BookPageUiState.Success) {
+                _uiState.value = currentState.copy(isDownloading = false)
             }
         }
     }

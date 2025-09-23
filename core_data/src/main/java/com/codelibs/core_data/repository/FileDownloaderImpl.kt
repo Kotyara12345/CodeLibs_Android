@@ -8,7 +8,11 @@ class FileDownloaderImpl @Inject constructor(
     private val downloadManagerFileDownloader: DownloadManagerFileDownloader
 ) : FileDownloader {
 
-    override fun download(url: String, fileName: String) {
-        downloadManagerFileDownloader.download(url, fileName)
+    override fun download(
+        url: String,
+        fileName: String,
+        onStatusChange: (isDownloading: Boolean) -> Unit
+    ): Long {
+        return downloadManagerFileDownloader.download(url, fileName, onStatusChange)
     }
 }

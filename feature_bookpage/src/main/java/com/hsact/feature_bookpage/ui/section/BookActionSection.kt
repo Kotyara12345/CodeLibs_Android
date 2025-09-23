@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 internal fun BookActionSection(
     modifier: Modifier,
+    isDownloading: Boolean,
     onBuyClick: () -> Unit,
     onDownloadClick: () -> Unit) {
     Column(modifier = modifier) {
@@ -36,9 +37,10 @@ internal fun BookActionSection(
         //Кнопка "Скачать"
         Button(
             onClick = onDownloadClick,
+            enabled = !isDownloading,
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Скачать")
+            Text(if (isDownloading) "Скачивается..." else "Скачать")
         }
     }
 }
