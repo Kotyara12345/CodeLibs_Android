@@ -1,19 +1,21 @@
 package com.hsact.feature_bookpage.ui.section
 
+import android.widget.Toast
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.hsact.feature_bookpage.ui.components.DownloadProgressBar
 
 @Composable
 internal fun BookActionSection(
@@ -23,6 +25,12 @@ internal fun BookActionSection(
     onBuyClick: () -> Unit,
     onDownloadClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    // Плавная анимация прогресса
+    val animatedProgress by animateFloatAsState(
+        targetValue = (downloadProgress.coerceIn(0, 100) / 100f),
+        label = "downloadProgress"
+    )
     Column(modifier = modifier) {
         //Кнопка "Купить"
         Button(
@@ -51,28 +59,16 @@ internal fun BookActionSection(
 
         if (isDownloading) {
             Spacer(Modifier.height(8.dp))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(
-                    text = "$downloadProgress%",
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        color = MaterialTheme.colorScheme.primary
-                    ),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                )
-                Spacer(Modifier.height(4.dp))
-                LinearProgressIndicator(
-                    progress = {
-                        downloadProgress.coerceIn(0, 100) / 100f
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(6.dp)
-                        .clip(RoundedCornerShape(3.dp)),
-                    color = MaterialTheme.colorScheme.primary,
-                    trackColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-                    strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
-                )
+            DownloadProgressBar(downloadProgress, animatedProgress)
+        }
+        // Показываем Toast, когда прогресс достиг 100%
+        if (downloadProgress >= 100) {
+            LaunchedEffect(Unit) {
+                Toast.makeText(
+                    context,
+                    "Файл сохранён в загрузки",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
