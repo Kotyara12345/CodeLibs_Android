@@ -51,5 +51,4 @@ dependencies {
     implementation(libs.moshi.adapters)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
 }

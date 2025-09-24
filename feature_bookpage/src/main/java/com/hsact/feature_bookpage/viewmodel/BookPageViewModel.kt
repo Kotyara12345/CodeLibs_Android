@@ -34,6 +34,7 @@ class BookPageViewModel @Inject constructor(
         }
     }
 
+    private var currentDownloadId: Long? = null
     fun onDownloadClick() {
         val currentState = _uiState.value
         if (currentState is BookPageUiState.Success) {
@@ -41,13 +42,29 @@ class BookPageViewModel @Inject constructor(
             val title = currentState.book.title
 
             if (!url.isNullOrEmpty()) {
-                // Получаем расширение из URL
-                val extension =
-                    url.substringAfterLast('.', "pdf") // на случай, если нет точки
+                val extension = url.substringAfterLast('.', "pdf")
                 val fileName = "$title.$extension"
-                fileDownloader.download(url, fileName)
-            } else {
-                Log.e("BookPageViewModel", "No download URL available")
+
+                currentDownloadId =
+                    fileDownloader.download(url, fileName) { progress, isDownloading ->
+                        val currentState = _uiState.value
+                        if (currentState is BookPageUiState.Success) {
+                            _uiState.value = currentState.copy(
+                                downloadProgress = progress,
+                                isDownloading = isDownloading
+                            )
+                        }
+                    }
+            }
+        }
+    }
+
+    fun onDownloadCompleted(id: Long) {
+        // проверим, что это наш последний запрос
+        if (id == currentDownloadId) {
+            val currentState = _uiState.value
+            if (currentState is BookPageUiState.Success) {
+                _uiState.value = currentState.copy(isDownloading = false)
             }
         }
     }

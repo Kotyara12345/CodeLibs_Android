@@ -7,5 +7,9 @@ interface FileDownloader {
      * @param url      - ссылка на файл
      * @param fileName - имя файла (например, "book.pdf")
      */
-    fun download(url: String, fileName: String)
+    fun download(
+        url: String,
+        fileName: String,
+        onStatusChange: (progress: Int, isDownloading: Boolean) -> Unit
+    ): Long // возвращаем downloadId
 }

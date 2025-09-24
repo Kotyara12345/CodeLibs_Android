@@ -1,18 +1,23 @@
-package com.codelibs.core_data.repository
+package com.codelibs.core_download
 
 import android.app.DownloadManager
 import android.content.Context
 import android.os.Environment
+import android.util.Log
 import androidx.core.net.toUri
-import com.codelibs.core_domain.repository.FileDownloader
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class DownloadManagerFileDownloader @Inject constructor(
     @param:ApplicationContext private val context: Context
-) : FileDownloader {
+) {
+    private val downloadObserver = DownloadObserver(context)
 
-    override fun download(url: String, fileName: String) {
+    fun download(
+        url: String,
+        fileName: String,
+        onStatusChange: (progress: Int, isDownloading: Boolean) -> Unit
+    ): Long {
         val request = DownloadManager.Request(url.toUri())
             .setTitle(fileName)
             .setDescription("Downloading...")
@@ -20,6 +25,12 @@ class DownloadManagerFileDownloader @Inject constructor(
             .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName)
 
         val dm = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
-        dm.enqueue(request)
+        val downloadId = dm.enqueue(request)
+
+        downloadObserver.observeDownload(downloadId) { progress, isDownloading ->
+            onStatusChange(progress, isDownloading)
+            Log.d("FileDownloader", "Download progress: $progress%")
+        }
+        return downloadId
     }
 }
