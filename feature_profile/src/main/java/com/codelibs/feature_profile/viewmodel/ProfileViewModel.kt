@@ -2,7 +2,6 @@ package com.codelibs.feature_profile.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.codelibs.core_domain.model.AccountMini
 import com.codelibs.core_domain.model.User
 import com.codelibs.core_domain.repository.AuthRepository
 import com.codelibs.feature_profile.ui.state.ProfileUiState
@@ -16,14 +15,26 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Unauthorized)
+    private val _uiState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val uiState: StateFlow<ProfileUiState> = _uiState
+    init {
+        viewModelScope.launch {
+            authRepository.getCurrentUser().collect { user ->
+                if (user != null) {
+                    val detailedUser = authRepository.getAccount(user.id)
+                    _uiState.value = ProfileUiState.Authorized(detailedUser)
+                } else {
+                    _uiState.value = ProfileUiState.Unauthorized
+                }
+            }
+        }
 
+    }
     fun login(username: String, password: String) {
         _uiState.value = ProfileUiState.Loading
         viewModelScope.launch {
             try {
-                val user: AccountMini = authRepository.login(username, password)
+                val user = authRepository.login(username, password)
                 val detailedUser = authRepository.getAccount(user.id)
                 val mockUser = User(
                     id = user.id,

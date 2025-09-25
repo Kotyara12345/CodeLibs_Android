@@ -1,5 +1,6 @@
-package com.codelibs.core_network.utils
+package com.codelibs.core_network.interceptor
 
+import android.util.Base64
 import com.codelibs.core_storage.CredentialsStorage
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -20,5 +21,11 @@ class BasicAuthInterceptor @Inject constructor(
             requestBuilder.addHeader("Authorization", header)
         }
         return chain.proceed(requestBuilder.build())
+    }
+
+    private fun buildBasicAuthHeader(username: String, password: String): String {
+        val credentials = "$username:$password"
+        val encoded = Base64.encodeToString(credentials.toByteArray(Charsets.UTF_8), Base64.NO_WRAP)
+        return "Basic $encoded"
     }
 }

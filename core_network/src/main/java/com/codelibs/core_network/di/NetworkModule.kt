@@ -1,7 +1,7 @@
 package com.codelibs.core_network.di
 
 import com.codelibs.core_network.api.BooksApiService
-import com.codelibs.core_network.utils.BasicAuthInterceptor
+import com.codelibs.core_network.interceptor.BasicAuthInterceptor
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -12,6 +12,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+@Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {

@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.codelibs.core_storage
 
 import android.content.Context

@@ -8,6 +8,8 @@ import com.codelibs.core_network.api.BooksApiService
 import com.codelibs.core_network.dto.SessionRequestDTO
 import com.codelibs.core_storage.CredentialsStorage
 import com.codelibs.core_storage.UserPreferences
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor(
@@ -29,6 +31,17 @@ class AuthRepositoryImpl @Inject constructor(
     override suspend fun logout() {
         credentials.clear()
         userPrefs.clearUser()
+    }
+
+    // Flow текущего пользователя
+    override fun getCurrentUser(): Flow<AccountMini?> {
+        return combine(userPrefs.userId, userPrefs.username) { id, username ->
+            if (id != null && !username.isNullOrEmpty()) {
+                AccountMini(id, username)
+            } else {
+                null
+            }
+        }
     }
 
     override suspend fun getAccount(id: Int): User {
