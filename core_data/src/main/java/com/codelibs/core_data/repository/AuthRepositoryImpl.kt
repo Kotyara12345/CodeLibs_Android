@@ -6,8 +6,8 @@ import com.codelibs.core_domain.model.User
 import com.codelibs.core_domain.repository.AuthRepository
 import com.codelibs.core_network.api.BooksApiService
 import com.codelibs.core_network.dto.SessionRequestDTO
-import com.codelibs.core_storage.CredentialsStorage
-import com.codelibs.core_storage.UserPreferences
+import com.codelibs.core_storage.repository.CredentialsProvider
+import com.codelibs.core_storage.repository.UserPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val api: BooksApiService,
     private val userPrefs: UserPreferences,
-    private val credentials: CredentialsStorage
+    private val credentials: CredentialsProvider
 ) : AuthRepository {
     override suspend fun login(username: String, password: String): AccountMini {
         val dto = api.createSession(SessionRequestDTO(username, password)).toDomain()

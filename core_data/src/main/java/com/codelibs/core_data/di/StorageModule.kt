@@ -1,8 +1,10 @@
 package com.codelibs.core_data.di
 
 import android.content.Context
-import com.codelibs.core_storage.CredentialsStorage
-import com.codelibs.core_storage.UserPreferences
+import com.codelibs.core_storage.impl.CredentialsStorage
+import com.codelibs.core_storage.impl.UserPreferencesImpl
+import com.codelibs.core_storage.repository.CredentialsProvider
+import com.codelibs.core_storage.repository.UserPreferences
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,10 +19,10 @@ object StorageModule {
     @Provides
     @Singleton
     fun provideUserPreferences(@ApplicationContext context: Context): UserPreferences =
-        UserPreferences(context)
+        UserPreferencesImpl(context)
 
     @Provides
     @Singleton
-    fun provideCredentialsStorage(@ApplicationContext context: Context): CredentialsStorage =
+    fun provideCredentialsStorage(@ApplicationContext context: Context): CredentialsProvider =
         CredentialsStorage(context)
 }
