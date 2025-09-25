@@ -1,13 +1,13 @@
 package com.codelibs.core_network.interceptor
 
 import android.util.Base64
-import com.codelibs.core_storage.repository.CredentialsProvider
+import com.codelibs.core_storage.repository.CredentialsStorage
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
 class BasicAuthInterceptor @Inject constructor(
-    private val credentials: CredentialsProvider
+    private val credentials: CredentialsStorage
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {

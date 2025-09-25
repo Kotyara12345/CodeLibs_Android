@@ -28,7 +28,6 @@ class ProfileViewModel @Inject constructor(
                 }
             }
         }
-
     }
     fun login(username: String, password: String) {
         _uiState.value = ProfileUiState.Loading

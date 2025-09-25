@@ -6,9 +6,9 @@ import android.content.Context
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.codelibs.core_storage.repository.CredentialsProvider
+import com.codelibs.core_storage.repository.CredentialsStorage
 
-class CredentialsStorage(context: Context): CredentialsProvider {
+class CredentialsStorageImpl(context: Context): CredentialsStorage {
     private val masterKey = MasterKey.Builder(context)
         .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
         .build()
