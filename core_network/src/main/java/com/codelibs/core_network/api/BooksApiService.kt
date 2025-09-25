@@ -1,14 +1,30 @@
 package com.codelibs.core_network.api
 
+import com.codelibs.core_network.dto.AccountMiniDTO
 import com.codelibs.core_network.dto.BookDTO
 import com.codelibs.core_network.dto.BooksResponse
 import com.codelibs.core_network.dto.CommentDTO
+import com.codelibs.core_network.dto.SessionRequestDTO
 import com.codelibs.core_network.dto.RubricDTO
+import com.codelibs.core_network.dto.UserDTO
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface BooksApiService {
+
+    // Авторизация
+    @POST("accounts/session/")
+    suspend fun createSession(
+        @Body request: SessionRequestDTO
+    ): AccountMiniDTO
+
+    @GET("accounts/{id}/")
+    suspend fun getAccount(
+        @Path("id") id: Int
+    ): UserDTO
 
     @GET("books/")
     suspend fun getBooks(

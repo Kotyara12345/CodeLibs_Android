@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.codelibs.core_network"
+    namespace = "com.codelibs.core_storage"
     compileSdk = 36
 
     defaultConfig {
@@ -36,13 +36,9 @@ android {
 }
 
 dependencies {
-    implementation(project(":core:storage"))
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
-    ksp(libs.moshi.kotlin.codegen)
-    implementation(libs.retrofit)
-    implementation(libs.converter.moshi)
-    implementation(libs.moshi.kotlin)
-    implementation(libs.moshi.adapters)
+    implementation(libs.androidx.datastore.preferences)
+    implementation(libs.androidx.security.crypto)
     testImplementation(libs.junit)
 }
