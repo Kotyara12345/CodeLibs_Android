@@ -29,12 +29,19 @@ class CatalogViewModel @Inject constructor(
     private var endReached = false           // true, когда сервер вернул пустую страницу
     private var currentRubrics: List<Int> = emptyList()
 
+    private var isFavoritesGlobal: Boolean = false
+
     /**
      * Загрузить книги
      * @param rubricsId — фильтр по рубрикам (пустой список = без фильтра)
      * @param reset — true = загрузка с первой страницы (сброс), false = загрузить next page (append)
      */
-    fun loadBooks(rubricsId: List<Int> = emptyList(), reset: Boolean = true) {
+    fun loadBooks(
+        isFavorites: Boolean = false,
+        rubricsId: List<Int> = emptyList(),
+        reset: Boolean = true
+    ) {
+        isFavoritesGlobal = isFavorites
         // Защита от повторных параллельных вызовов
         if (isLoading) return
 
@@ -46,10 +53,10 @@ class CatalogViewModel @Inject constructor(
         } else {
             // если фильтр поменялся — делаем сброс
             if (rubricsId != currentRubrics) {
-                loadBooks(rubricsId, reset = true)
+                loadBooks(isFavorites, rubricsId, reset = true)
                 return
             }
-            if (endReached) return // ничего не подгружаем, уже в конце
+            if (endReached) return // ничего не подгружаем в конце
         }
 
         viewModelScope.launch {
@@ -58,7 +65,10 @@ class CatalogViewModel @Inject constructor(
 
             try {
                 val rubricsParam = currentRubrics.ifEmpty { null }
-                val books = booksRepository.getBooks(page = currentPage, rubrics = rubricsParam)
+                val books = if (!isFavorites) booksRepository.getBooks(
+                    page = currentPage,
+                    rubrics = rubricsParam
+                ) else booksRepository.getFavoriteBooks(page = currentPage)
 
                 if (reset) {
                     // первая страница — заменяем список
@@ -94,10 +104,10 @@ class CatalogViewModel @Inject constructor(
     }
 
     // Удобный alias для вызова из UI при скролле
-    fun loadNextPage() = loadBooks(currentRubrics, reset = false)
+    fun loadNextPage() = loadBooks(isFavoritesGlobal, currentRubrics, reset = false)
 
     // Перезагрузить текущий набор (pull-to-refresh, смена фильтра и т.п.)
-    fun refresh() = loadBooks(currentRubrics, reset = true)
+    fun refresh() = loadBooks(isFavoritesGlobal, currentRubrics, reset = true)
 
     // Для UI: есть ли ещё страницы
     fun hasMore(): Boolean = !endReached

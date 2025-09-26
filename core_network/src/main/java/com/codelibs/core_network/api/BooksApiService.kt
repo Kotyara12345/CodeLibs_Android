@@ -4,8 +4,8 @@ import com.codelibs.core_network.dto.AccountMiniDTO
 import com.codelibs.core_network.dto.BookDTO
 import com.codelibs.core_network.dto.BooksResponse
 import com.codelibs.core_network.dto.CommentDTO
-import com.codelibs.core_network.dto.SessionRequestDTO
 import com.codelibs.core_network.dto.RubricDTO
+import com.codelibs.core_network.dto.SessionRequestDTO
 import com.codelibs.core_network.dto.UserDTO
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -49,6 +49,12 @@ interface BooksApiService {
     suspend fun getSimilarBooks(
         @Path("id") bookId: Int,
     ): List<BookDTO>
+
+    @GET("books/favorites/")
+    suspend fun getFavoriteBooks(
+        @Query("search") search: String? = null,
+        @Query("page") page: Int = 1,
+    ): BooksResponse
 
     @GET("books/{book_id}/comments/")
     suspend fun getComments(

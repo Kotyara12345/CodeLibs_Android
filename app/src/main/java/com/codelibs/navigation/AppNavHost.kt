@@ -85,7 +85,8 @@ fun AppNavHost(
             val viewModel: CatalogViewModel = hiltViewModel(backStackEntry)
             CatalogScreen(
                 rubricsId = emptyList(),
-                rubricName = null,
+                rubricName = "Избранное",
+                isFavorites = true,
                 onItemClick = { bookId ->
                     navController.navigate(AppDestination.BookPage.createRoute(bookId))
                 },

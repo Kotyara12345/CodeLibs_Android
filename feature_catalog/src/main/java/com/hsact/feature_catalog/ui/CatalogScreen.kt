@@ -28,6 +28,7 @@ import com.hsact.feature_catalog.viewmodel.CatalogViewModel
 fun CatalogScreen(
     rubricsId: List<Int> = emptyList(),
     rubricName: String? = null,
+    isFavorites: Boolean = false,
     onItemClick: (Int) -> Unit,
     viewModel: CatalogViewModel
 ) {
@@ -46,7 +47,7 @@ fun CatalogScreen(
             is CatalogUiState.Loading -> true
         }
         if (shouldLoad) {
-            viewModel.loadBooks(rubricsId, reset = true)
+            viewModel.loadBooks(isFavorites, rubricsId, reset = true)
         }
     }
 
