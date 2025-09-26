@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.codelibs.core_ui.components.screenPadding
 
 @Composable
 fun ProfileItem(
@@ -23,7 +24,8 @@ fun ProfileItem(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(vertical = 12.dp, horizontal = 16.dp),
+            .padding(vertical = 12.dp)
+            .screenPadding(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Row {
