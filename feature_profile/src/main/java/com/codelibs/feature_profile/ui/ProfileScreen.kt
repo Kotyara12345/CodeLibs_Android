@@ -13,11 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -33,10 +28,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.codelibs.core_ui.R
 import com.codelibs.core_ui.components.horizontalScreenPadding
 import com.codelibs.feature_profile.ui.components.ProfileItem
 import com.codelibs.feature_profile.ui.state.ProfileUiState
@@ -88,24 +85,25 @@ fun ProfileScreen(
                         Text(user.email ?: "", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
+                Spacer(Modifier.height(32.dp))
                 ProfileItem(
                     text = "Профиль",
-                    startIcon = Icons.Default.Person,
+                    startIcon = painterResource(id = R.drawable.user),
                     onClick = { /* ... */ }
                 )
                 ProfileItem(
                     text = "Добавить книгу",
-                    startIcon = Icons.Default.Add,
+                    startIcon = painterResource(id = R.drawable.note_favorite),
                     onClick = { /* ... */ }
                 )
                 ProfileItem(
                     text = "Мои отзывы",
-                    startIcon = Icons.Default.ThumbUp,
+                    startIcon = painterResource(id = R.drawable.message_edit),
                     onClick = { /* ... */ }
                 )
                 ProfileItem(
                     text = "Управление рассылками",
-                    startIcon = Icons.Default.Email,
+                    startIcon = painterResource(id = R.drawable.sms_edit),
                     onClick = { /* ... */ }
                 )
                 ProfileItem(
